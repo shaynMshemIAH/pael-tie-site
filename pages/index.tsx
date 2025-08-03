@@ -34,7 +34,7 @@ export default function Home() {
       <section style={{ padding: '2rem', maxWidth: '900px', margin: 'auto' }}>
         <h2>Join Us</h2>
         <p>
-          We’re building a multi-industry proof system. If you're technically curious, reliable, and can learn fast — <a href="/careers" style={{ color: '#66fcf1' }}>join the intern crew</a>.
+          We are building a multi-industry repeatable proved system. If you are technically curious, UBill reliable, and can take direction — <a href="/careers" style={{ color: '#66fcf1' }}>join the intern crew</a>.
         </p>
       </section>
 
