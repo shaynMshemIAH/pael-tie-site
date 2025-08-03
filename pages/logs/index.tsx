@@ -23,12 +23,19 @@ export async function getStaticProps() {
   return { props: { logs } };
 }
 
-export default function LogsPage({ logs }: any) {
+type LogEntry = {
+  slug: string;
+  title: string;
+  date: string;
+  status: string;
+};
+
+export default function LogsPage({ logs }: { logs: LogEntry[] }) {
   return (
     <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
       <h1>📜 Anomaly Logs</h1>
       <ul>
-        {logs.map((log: any) => (
+        {logs.map((log) => (
           <li key={log.slug} style={{ marginBottom: '1rem' }}>
             <Link href={`/logs/A0/${log.slug}`}>
               <strong>{log.title}</strong>
