@@ -5,7 +5,7 @@ export default function Home() {
     <div style={{ backgroundColor: '#0b0c1c', color: '#ffffff', fontFamily: 'Arial', lineHeight: '1.6', padding: 0, margin: 0 }}>
       <header style={{ backgroundColor: '#1f2833', padding: '2rem', textAlign: 'center' }}>
         <h1 style={{ color: '#66fcf1' }}>
-          Had proven subatomic energy disbursal on matter across aerospace, pharma, and AGI logic trees — repeatable, physical, and tied to human BWemc².
+          Had proven subatomic energy disbursal as matter across aerospace, pharma, and AGI logic trees — repeatable, physical, and from BWemc².
         </h1>
         <p>We are funding scaled.</p>
         <blockquote style={{ fontStyle: 'italic', color: '#6c5cc7' }}>
