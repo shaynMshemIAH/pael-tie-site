@@ -1,5 +1,5 @@
 // pages/aerospace.tsx
-import Link from 'next/Link';
+import Link from 'next/link';
 export default function Aerospace() {
   return (
     <main style={{
