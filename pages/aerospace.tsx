@@ -39,7 +39,7 @@ export default function Aerospace() {
           <li><strong>Date:</strong> TBD 22, 2025</li>
           <li><strong>Field:</strong> FieldMI</li>
           <li><strong>Input:</strong> Hz_intended Ammonia (NH₃), sealed, Hz_intention from Field</li>
-          <li><strong>Output:</strong> mL detected --> with no combustion, nor relativistic ammonia, physical. --> subatomic transformation confirmed</li>
+          <li><strong>Output:</strong> mL detected. No combustion, nor relativistic ammonia. Repeatable duration result suggests subatomic transformation duration</li>
           <li><strong>Proof:</strong> Sensor data from detection array</li>
           <li><strong>Conclusion:</strong> Demonstrated propulsion via reduced mass payload. 
               Energy disbursed through BWemc² + scaled LdD, unlocking TIH (eternal immortal) state over DH (eternal mortal).
