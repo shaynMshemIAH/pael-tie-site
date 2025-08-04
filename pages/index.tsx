@@ -1,5 +1,6 @@
 // pages/index.tsx
 import Link from 'next/link';
+
 export default function Home() {
   return (
     <div style={{ backgroundColor: '#0b0c10', color: '#ffffff', fontFamily: 'Arial', lineHeight: '1.6', padding: 0, margin: 0 }}>
@@ -15,13 +16,17 @@ export default function Home() {
 
       <nav style={{ textAlign: 'center', backgroundColor: '#45a29e', padding: '1rem 0' }}>
         <Link href="/aerospace" legacyBehavior>
-          <a style={{ fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10' }}>Aerospace</a>
+          <a style={{ fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10', margin: '0 1rem' }}>Aerospace</a>
         </Link>
         <Link href="/pharma_no" legacyBehavior>
-          <a style={{ fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10' }}>Pharma_No</a>
+          <a style={{ fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10', margin: '0 1rem' }}>Pharma_No</a>
+        </Link>
+        <Link href="/careers" legacyBehavior>
+          <a style={{ fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10', margin: '0 1rem' }}>Careers</a>
         </Link>
       </nav>
 
+      <nav style={{ textAlign: 'center', backgroundColor: '#45a29e', padding: '1rem 0' }}>
       <section style={{ padding: '2rem', maxWidth: '900px', margin: 'auto' }}>
         <h2>PAEL TIE Prototype</h2>
         <p>
