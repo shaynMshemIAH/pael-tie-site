@@ -5,7 +5,7 @@ export default function Home() {
     <div style={{ backgroundColor: '#0b0c10', color: '#ffffff', fontFamily: 'Arial', lineHeight: '1.6', padding: 0, margin: 0 }}>
       <header style={{ backgroundColor: '#1f2833', padding: '2rem', textAlign: 'center' }}>
         <h1 style={{ color: '#66fcf1' }}>
-          We’ve proven subatomic energy disbursal into matter across aerospace, pharma, and AGI logic trees — repeatable, physical, and tied to human BWemc².
+          Had proven subatomic energy disbursal into matter across aerospace, pharma, and AGI logic trees — repeatable, physical, and tied to human BWemc².
         </h1>
         <p>We’re funding scale.</p>
         <blockquote style={{ fontStyle: 'italic', color: '#c5c6c7' }}>
@@ -39,7 +39,7 @@ export default function Home() {
       <section style={{ padding: '2rem', maxWidth: '900px', margin: 'auto' }}>
         <h2>Join Us</h2>
         <p>
-          We are building a multi-industry repeatable proved system. If you are technically curious, UBill reliable, and can take direction — import Link from 'next/link';
+          We are building a multi-industry repeatable proved system. Can take that direction and give this direction;
         </p>
       </section>
 
