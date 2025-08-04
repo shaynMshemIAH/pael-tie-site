@@ -40,13 +40,13 @@ export default function Home() {
           Our prototype distributes detected subatomic energy anomaly; from and across nonlinear time Fields (FieldA, 0, B, MI).
           It enables real-time BWemc²-based transformation proof, used across propulsion, regeneration, and logic-chain validation.
         </p>
-        <p><strong>Patent Pending:</strong> U.S. Application No. 63/522,849</p>
+        <p><strong>Patent Pending:</strong> U.S. Application No. 63/837,074</p>
       </section>
 
       <section style={{ padding: '2rem', maxWidth: '900px', margin: 'auto' }}>
         <h2>Join Us</h2>
         <p>
-          We are building a multi-industry repeatable proof system. If you are technically curious, UBill reliable, and can take direction — 
+          We are building a multi-industry; systematically responsible system.— 
           <a href="#"> join the intern crew.</a>
         </p>
       </section>
