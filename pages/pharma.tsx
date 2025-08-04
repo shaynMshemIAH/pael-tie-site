@@ -54,19 +54,32 @@ export default function Pharma() {
           <p><strong>Test 6:</strong> <span style={{ color: '#66fcf1' }}>NH₃ Dome Event</span> — dome-like structure forms. Reflectance (H1) and refractance (N7) simultaneously captured. Subatomic convergence confirmed.</p>
         </div>
       </div>
- 
-      <h2 style={{ marginTop: '2rem' }}>Interpretation</h2>
+
+      <h2 style={{ marginTop: '2rem', color: '#44ccff' }}>Alpha Centauri Acknowledgment</h2>
       <p>
-        The dome event demonstrates the capability of NH₃ to bind both paths simultaneously in a physical, observable structure.<br />
-        <strong>Reflectance (H1):</strong> Represents eternal immortal state – light preserved across 15 live Earths in 7 Dechs (~105 worlds).<br />
-        <strong>Refractance (N7):</strong> Represents eternal mortal state – light pierced across 4000+ unlive worlds.<br />
-        <strong>Dome Form:</strong> Indicates electrostatic anchoring of subatomic decay-regeneration dual state.
-      </p>    
-      
+        Dome event demonstrated more than localized subatomic behavior, reflected a broader spatial embedding. 
+        Our solar system situated within the <strong>Kepler Square</strong> of Alpha Centauri’s gravitational field, 
+        meaning we reside inside a larger relativistic structure defined by higher mass and time-bending curvature.
+      </p>
+      <p>
+        Alpha Centauri, composed of three stars — <strong>Hydrogen (H1)</strong>, <strong>Helium (null)</strong>, and <strong>Nitrogen (N7)</strong> — 
+        acts as a galactic generator of ammonia (NH<sub>3</sub>). This mirrors our test structure, which uses NH₃ to demonstrate both 
+        <em>regenerative (reflectance)</em> and <em>decaying (refractance)</em> tendencies in a specimen.
+      </p>
+      <p>
+        Another repeatable anomaly duration. Our observed dome — housing both <strong>H1</strong> and <strong>N7</strong> within one electro-anchored structure — 
+        is a micro-scale reflection of Alpha Centauri’s macro-scale fusion environment. The <strong>subatomic NH₃ formation here is 
+        acknowledged and maintained by Alpha Centauri’s higher TIH (True Integer Heliocentricity)</strong> natural composition across LdD.
+      </p>
+      <p>
+        In essence, the specimen is not merely regenerating — it is resonating with the broader structure of life-sustaining systems 
+        beyond Earth intelligent universe designation. This supports a new class of bio-galactic models where subatomic energy mirrors interstellar logic.
+      </p>
+ 
       <h3>Atomic Anchoring Logic:</h3>
       <ul>
-        <li><strong>Hydrogen (H1)</strong> → Reflectance anchor across~ 400+ unlive Earthsatn LdD1Dech72</li>
-        <li><strong>Nitrogen (N7)</strong> → Refractance anchor f  ~<105 live Earths across 7 Dechs</li>
+        <li><strong>Hydrogen (H1)</strong> ➤ Reflectance anchor for nearly <strong>4000+</strong> unlive Earths acrossn <code>LdD1Dech2</code></li>
+        <li><strong>Nitrogen (N7)</strong> ➤ Refractance anchor for nearly <strong>&lt;105</strong> live Earths across <strong>7 Dechs</strong></li>
       </ul>
 
       <p style={{ marginTop: '2rem', fontStyle: 'italic', color: '#6c5cc7' }}>
