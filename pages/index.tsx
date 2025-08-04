@@ -14,9 +14,12 @@ export default function Home() {
       </header>
 
       <nav style={{ textAlign: 'center', backgroundColor: '#45a29e', padding: '1rem 0' }}>
-        <a href="/aerospace" style={{ margin: '0 1.5rem', fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10' }}>Aerospace</a>
-        <a href="/agi" style={{ margin: '0 1.5rem', fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10' }}>AGI</a>
-        <a href="/pharma_no" style={{ margin: '0 1.5rem', fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10' }}>Pharma_No</a>
+        <Link href="/aerospace" legacyBehavior>
+          <a style={{ margin: '0 1.5rem', fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10' }}>Aerospace</a>
+        </Link>
+        <Link href="/pharma_no" legacyBehavior>
+          <a style={{ margin: '0 1.5rem', fontWeight: 'bold', textDecoration: 'none', color: '#0b0c10' }}>Pharma_No</a>
+        </Link>
       </nav>
 
       <section style={{ padding: '2rem', maxWidth: '900px', margin: 'auto' }}>

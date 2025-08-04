@@ -1,4 +1,5 @@
 // pages/aerospace.tsx
+import Link from 'next/Link';
 export default function Aerospace() {
   return (
     <main style={{
@@ -47,7 +48,9 @@ export default function Aerospace() {
       </section>
 
       <footer style={{ marginTop: '4rem', color: '#c5c6c7', fontSize: '0.9rem' }}>
-        ⬅️ <a href="/" style={{ color: '#45a29e' }}>Return to Main Page</a>
+      <Link href="/" legacyBehavior>
+        <a style={{ color: '#45a29e' }}>Main Page</a>
+      </Link>
       </footer>
     </main>
   );
