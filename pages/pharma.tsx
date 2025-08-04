@@ -1,4 +1,3 @@
-import Link from 'next/link';
 export default function Pharma() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial', lineHeight: '1.6', backgroundColor: '#0b0c1c', color: '#ffffff' }}>
