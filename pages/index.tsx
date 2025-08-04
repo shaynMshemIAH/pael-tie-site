@@ -14,14 +14,23 @@ export default function Home() {
       </header>
 
       <nav style={{ textAlign: 'center', backgroundColor: '#4a52ae', padding: '1rem 0' }}>
-        <Link href="/aerospace" legacyBehavior>
-          <a style={{ fontWeight: 'bold', textDecoration: 'none', color: '#00b6ce', margin: '0 1rem' }}>Aerospace</a>
+        <Link 
+          href="/aerospace" 
+          style={{ fontWeight: 'bold', textDecoration: 'none', color: '#00b6ce', margin: '0 1rem' }}
+        >
+          Aerospace
         </Link>
-        <Link href="/pharma_no" legacyBehavior>
-          <a style={{ fontWeight: 'bold', textDecoration: 'none', color: '#00b6ce', margin: '0 1rem' }}>Pharma</a>
+        <Link 
+          href="/pharma"
+          style={{ fontWeight: 'bold', textDecoration: 'none', color: '#00b6ce', margin: '0 1rem' }}
+        >
+          Pharma
         </Link>
-        <Link href="/agi" legacyBehavior>
-          <a style={{ fontWeight: 'bold', textDecoration: 'none', color: '#00b6ce', margin: '0 1rem' }}>AGI</a>
+        <Link 
+          href="/agi"
+          style={{ fontWeight: 'bold', textDecoration: 'none', color: '#00b6ce', margin: '0 1rem' }}
+        >
+          AGI
         </Link>
       </nav>
 
