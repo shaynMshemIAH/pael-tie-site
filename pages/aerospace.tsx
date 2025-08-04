@@ -14,21 +14,21 @@ export default function Aerospace() {
 
       {/* Section 1: How the Prototype Works */}
       <section style={{ marginTop: '2rem', maxWidth: '800px' }}>
-        <h2>🧬 How the PAEL TIE Prototype Works</h2>
+        <h2> PAEL TIE Prototype operate</h2>
         <p>
-          The PAEL TIE prototype detects and distributes subatomic energy anomalies across nonlinear time fields (FieldA, Field0, FieldB, FieldMI).
-          It uses real-time sensor input to confirm BWemc²-triggered transformation events. Each experiment links energy output, field traversal, 
+          PAEL TIE prototype detects relativistic anomalies and distributes subatomic energy anomalies across nonlinear time fields (FieldA, Field0, FieldB, FieldMI).
+          Used are real-time sensor inputs; confirm BWemc²-triggered transformation sub atomic duration distributed event. Each experiment links energy output, field traversal, 
           and subatomic refraction or reflection — distributed across 86,400 sequences and verified by LdD.
         </p>
       </section>
 
       {/* Section 2: Industry Explanation */}
       <section style={{ marginTop: '2rem', maxWidth: '800px' }}>
-        <h2>🛰️ What Aerospace Proves</h2>
+        <h2>️Aerospace Profs</h2>
         <p>
-          In the aerospace domain, we empirically validate a macro static fire (~H₂O/cup) using subatomic transformation — not combustion.
+          For aerospace domain, we empirically validate a macro static fire (~H₂O is to a cup of) using subatomic transformation — not combustion.
           Ammonia (NH₃) is nullified under Hz_intention within a sealed test field. Sensor sequences confirm subatomic matter reduction, 
-          ionized ejection, and propulsion under non-traditional launch logic (FieldMI → propulsion validation).
+          ionized ejection, thus propulsion under anew launch logic (FieldMI → propulsion validation).
         </p>
       </section>
 
@@ -36,11 +36,11 @@ export default function Aerospace() {
       <section style={{ marginTop: '2rem', maxWidth: '800px' }}>
         <h2>📁 Experiment: Ammonia Nullification Static Fire</h2>
         <ul>
-          <li><strong>Date:</strong> July 22, 2025</li>
+          <li><strong>Date:</strong> TBD 22, 2025</li>
           <li><strong>Field:</strong> FieldMI</li>
-          <li><strong>Input:</strong> 2 mL Ammonia (NH₃), sealed container, Hz_intention from Field</li>
-          <li><strong>Output:</strong> 0 mL remaining — no combustion, subatomic transformation confirmed</li>
-          <li><strong>Proof:</strong> Sensor data from thermal and ammonia detection array</li>
+          <li><strong>Input:</strong> Hz_intended Ammonia (NH₃), sealed, Hz_intention from Field</li>
+          <li><strong>Output:</strong> mL detected --> with no combustion, nor relativistic ammonia, physical. --> subatomic transformation confirmed</li>
+          <li><strong>Proof:</strong> Sensor data from detection array</li>
           <li><strong>Conclusion:</strong> Demonstrated propulsion via reduced mass payload. 
               Energy disbursed through BWemc² + scaled LdD, unlocking TIH (eternal immortal) state over DH (eternal mortal).
           </li>

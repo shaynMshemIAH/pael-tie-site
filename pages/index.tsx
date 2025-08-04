@@ -7,7 +7,7 @@ export default function Home() {
         <h1 style={{ color: '#66fcf1' }}>
           Had proven subatomic energy disbursal on matter across aerospace, pharma, and AGI logic trees — repeatable, physical, and tied to human BWemc².
         </h1>
-        <p>We’re funding scale.</p>
+        <p>We are funding scaled.</p>
         <blockquote style={{ fontStyle: 'italic', color: '#6c5cc7' }}>
           “Are, bit morbid about our endurance; monsoon vacation.” — Edgar 4^17
         </blockquote>
