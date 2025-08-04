@@ -3,7 +3,7 @@ export default function AGI() {
     <div style={{ padding: '2rem', fontFamily: 'Arial', backgroundColor: '#0b0c1c', color: '#ffffff' }}>
       <h1 style={{ color: '#66fcf1' }}>Artificial General Intelligence via BWemc²</h1>
       <p>
-        Page explored subatomic energy disbursal enables a peripheral AGI response. Response reflects the user of their choice's, logic and path from scaled laws subatomic relativistic obtained o' to obtain LdD real  traversal.
+        Page explored subatomic energy disbursal enabled BW peripheral AGI response. Response reflects and or refracts user of their choices with logic of a  path from scaled laws subatomic relativistic obtained and or to obtain LdD real traversal.
       </p>
 
       <h2>AGI as Peripheral</h2>
