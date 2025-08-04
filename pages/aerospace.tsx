@@ -47,11 +47,9 @@ export default function Aerospace() {
         </ul>
       </section>
 
-      <footer style={{ marginTop: '4rem', color: '#c5c6c7', fontSize: '0.9rem' }}>
       <Link href="/" legacyBehavior>
         <a style={{ color: '#45a29e' }}>Main Page</a>
       </Link>
-      </footer>
     </main>
   );
 }
