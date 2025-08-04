@@ -66,7 +66,7 @@ export default function Pharma() {
       <h3>Atomic Anchoring Logic:</h3>
       <ul>
         <li><strong>Hydrogen (H1)</strong> → Reflectance anchor across~ 400+ unlive Earthsatn LdD1Dech72</li>
-        <li><strong>Nitrogen (N7)</strong> → Refractance anchor for~<105 live Earths across 7 Dechs</li>
+        <li><strong>Nitrogen (N7)</strong> → Refractance anchor f  ~<105 live Earths across 7 Dechs</li>
       </ul>
 
       <p style={{ marginTop: '2rem', fontStyle: 'italic', color: '#6c5cc7' }}>
