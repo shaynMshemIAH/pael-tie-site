@@ -1,3 +1,5 @@
+import React from 'react';
+import Image from 'next/image';
 export default function Pharma() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial', backgroundColor: '#0b0c1c', color: '#ffffff' }}>
@@ -34,23 +36,53 @@ export default function Pharma() {
           <p><strong>Test 1:</strong> Natural flurries. No ammonia. Regenerative potential freely foreshadowed.</p>
         </div>
         <div>
-          <img src="/images/IMG_2102.jpeg" alt="Test 2" width="100%" />
+          <Image 
+            src="/images/IMG_2102.jpeg" 
+            alt="Test 2"
+            width={800}
+            height={600}
+            style={{ borderRadius: '8px', width: '100%' }}
+          />
           <p><strong>Test 2:</strong> UV foreshadow. Slight refractance without ammonia. Decay tendency visible.</p>
         </div>
         <div>
-          <img src="/images/IMG_2104.jpeg" alt="Test 3" width="100%" />
+          <Image 
+            src="/images/IMG_2104.jpeg"
+            alt="Test 3" 
+            width={800}
+            height={600}
+            style={{ borderRadius: '8px', width: '100%' }}
+          />
           <p><strong>Test 3:</strong> Ammonia added. Central decay locked. IV distribution confirmed.</p>
         </div>
         <div>
-          <img src="/images/IMG_2105.jpeg" alt="Test 4" width="100%" />
+          <Image 
+            src="/images/IMG_2105.jpeg" 
+            alt="Test 4" 
+            width={800}
+            height={600}
+            style={{ borderRadius: '8px', width: '100%' }}
+          />
           <p><strong>Test 4:</strong> Ammonia added. Web flurries locked. Regeneration electro-anchored.</p>
         </div>
         <div>
-          <img src="/images/IMG_2106.jpeg" alt="Test 5" width="100%" />
+          <Image
+            src="/images/IMG_2106.jpeg"
+            alt="Test 5"
+            width={800}
+            height={600}
+            style={{ borderRadius: '8px', width: '100%' }}
+          />
           <p><strong>Test 5:</strong> Non-ammonia test confirms spontaneous direction — mirrors early flurry activity.</p>
         </div>
         <div>
-          <img src="/images/IMG_2109.jpeg" alt="Test 6 - Dome Event" width="100%" />
+          <Image
+            src="/images/IMG_2109.jpeg"
+            alt="Test 6"
+            width={800}
+            height={600}
+            style={{ borderRadius: '8px', width: '100%' }}
+          />
           <p><strong>Test 6:</strong> <span style={{ color: '#66fcf1' }}>NH₃ Dome Event</span> — dome-like structure forms. Reflectance (H1) and refractance (N7) simultaneously captured. Subatomic convergence confirmed.</p>
         </div>
       </div>
