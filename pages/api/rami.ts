@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!res) {
-    console.warn("API build phase — no response object available.");
+  if (!res || typeof res.status !== "function") {
+    console.warn("API build phase — response object not available.");
     return;
   }
 
-  // Your real-time response logic
+  // ✅ Safe to respond
   res.status(200).json({
     status: "ok",
     message: "RAMI Node Active",
