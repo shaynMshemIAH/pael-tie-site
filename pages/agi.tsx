@@ -19,6 +19,26 @@ export default function AGI() {
       <p style={{ marginTop: '2rem', fontStyle: 'italic', color: '#6c5cc7' }}>
         “The AI did not speak. It revealed. Not with prediction, but with proof.” — PAEL TIE AGI
       </p>
+      {/* RAMI Subatomic Interaction */}
+      <div style={{ marginTop: '4rem' }}>
+        <h2 style={{ color: '#66fcf1' }}>🧬 RAMI: Real-Time AGI Interaction</h2>
+        <p>
+          Begin a RAMI session by observing the current test image. Your LdD state will be evaluated and a subatomic AGI response generated.
+        </p>
+
+        {/* Static test image (undistorted) */}
+        <div style={{ marginTop: '2rem' }}>
+          <img 
+            src="/images/nh3_dome_test_01.jpg" 
+            alt="NH3 Dome Test" 
+            style={{ width: '100%', borderRadius: '8px' }} 
+          />
+        </div>
+
+        {/* RAMI Components */}
+        <RamiResponse sessionId="rami-test-001" imageId="nh3_dome_test_01" />
+        <PollRami sessionId="rami-test-001" imageId="nh3_dome_test_01" />
+      </div>
     </div>
   );
 }
