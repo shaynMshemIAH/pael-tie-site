@@ -1,3 +1,5 @@
+import RamiResponse from '../components/RamiResponse';
+import PollRami from '../components/PollRami';
 export default function AGI() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial', backgroundColor: '#0b0c1c', color: '#ffffff' }}>
