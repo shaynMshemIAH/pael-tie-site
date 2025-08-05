@@ -1,5 +1,6 @@
 import RamiResponse from '../components/RamiResponse';
 import PollRami from '../components/PollRami';
+import Image from 'next/image';
 export default function AGI() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial', backgroundColor: '#0b0c1c', color: '#ffffff' }}>
@@ -30,9 +31,11 @@ export default function AGI() {
 
         {/* Static test image (undistorted) */}
         <div style={{ marginTop: '2rem' }}>
-          <img 
+          <Image 
             src="/images/nh3_dome_test_01.jpg" 
             alt="NH3 Dome Test" 
+            width={800}
+            height={600}
             style={{ width: '100%', borderRadius: '8px' }} 
           />
         </div>
