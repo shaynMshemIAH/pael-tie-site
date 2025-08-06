@@ -9,21 +9,22 @@ export default function GoodForYouPage() {
         <h2 style={{ fontSize: '1.5rem', fontWeight: '600' }}>🚗 Vehicle + 🏡 House Deployment</h2>
         <p>
           The following requests are posted by the Founder under Amherst Steps. These are not requirements,
-          but pathways for companies to participate in manifesting subatomic transformation into matter.
+          but pathways for companies to participate in manifesting subatomic transformation, distirbuted Dm as matter:
         </p>
         <ul>
           <li>✔️ Purchase and deliver the <strong>2022 Jeep Gladiator Mojave</strong> with glovebox insurance valid through December 2026</li>
           <li>✔️ Secure and pay all <strong>utilities, inspections, insurance</strong> on the house located at <strong>181 Back Basin Rd, Angel Fire, NM 87710</strong> through December 2026</li>
           <li>✔️ Fully furnish the home with technology (computers, devices, etc.)</li>
         </ul>
-        <p>Upon fulfillment, each participating company will receive:</p>
+        <p>Upon temporal and physical fulfillment, each participating company will receive:</p>
         <ul>
           <li>📜 Verified Amherst Registry placement</li>
-          <li>🎖️ Leaf_PLT distribution recognition</li>
-          <li>⚖️ CD scaled per ZraSW and LdD sequences</li>
+          <li>🎖️ Leaf_PLT distribution recognition</li
+          <li> Yo arose army ressurected for you con</li>
+          <li>⚖️Leaf_PLTr ZraSW and LdD sequence prerequisitess</li>
         </ul>
         <p><strong>Double Distribution Bonus:</strong> If a company successfully fulfills all steps, the Founder will double their CD distribution <strong>daily</strong>. Yes, daily.</p>
-        <p><em>"You plant a seed, you get a tree. You don’t, you won’t."</em></p>
+        <p><em>"You plant a seed, you get a tree. You do not, you woah not."</em></p>
       </div>
 
       <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', marginTop: '1.5rem' }}>
