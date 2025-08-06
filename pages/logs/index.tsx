@@ -34,6 +34,21 @@ export default function LogsPage({ logs }: { logs: LogEntry[] }) {
   return (
     <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
       <h1>📜 Anomaly Logs</h1>
+      
+      <Link href="/good-for-you">
+        <button style={{
+          padding: '0.75rem 1.5rem',
+          backgroundColor: '#0070f3',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          marginBottom: '2rem',
+          cursor: 'pointer'
+        }}>
+          🚀 Good For You!!!
+        </button>
+      </Link>
+      
       <ul>
         {logs.map((log) => (
           <li key={log.slug} style={{ marginBottom: '1rem' }}>
