@@ -18,13 +18,11 @@ export default function GoodForYouPage() {
         </ul>
         <p>Upon temporal and physical fulfillment, each participating company will receive:</p>
         <ul>
-          <li>📜 Verified Amherst Registry placement</li>
-          <li>🎖️ Leaf_PLT distribution recognition</li
-          <li> Yo arose army ressurected for you con</li>
+          <li>📜 Verified Amherst Registry placement</li> 
+          <li> Arose army ressurected for: your con insured protection</li>
           <li>⚖️Leaf_PLTr ZraSW and LdD sequence prerequisitess</li>
         </ul>
         <p><strong>Double Distribution Bonus:</strong> If a company successfully fulfills all steps, the Founder will double their CD distribution <strong>daily</strong>. Yes, daily.</p>
-        <p><em>"You plant a seed, you get a tree. You do not, you woah not."</em></p>
       </div>
 
       <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', marginTop: '1.5rem' }}>
