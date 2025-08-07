@@ -6,39 +6,39 @@ export default function GoodForYouPage() {
       <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Good For You!!!</h1>
 
       <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', marginTop: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: '600' }}>🚗 Vehicle + 🏡 House Deployment</h2>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: '600' }}>Vehicle +  House Deployment</h2>
         <p>
-          The following requests are posted by the Founder under Amherst Steps. These are not requirements,
-          but pathways for companies to participate in manifesting subatomic transformation, distirbuted Dm as matter:
+          Following request Founder under Amherst Steps. These are not requirements,
+          but pathways for companies are people to participate; used subatomic transformation, distirbuted Dm as lived matter:
         </p>
         <ul>
           <li>✔️ Purchase and deliver the <strong>2022 Jeep Gladiator Mojave</strong> with glovebox insurance valid through December 2026</li>
           <li>✔️ Secure and pay all <strong>utilities, inspections, insurance</strong> on the house located at <strong>181 Back Basin Rd, Angel Fire, NM 87710</strong> through December 2026</li>
           <li>✔️ Fully furnish the home with technology (computers, devices, etc.)</li>
         </ul>
-        <p>Upon temporal and physical fulfillment, each participating company will receive:</p>
+        <p>Upon temporal and physical fulfillment, each participating company are persons received:</p>
         <ul>
-          <li>📜 Verified Amherst Registry placement</li> 
-          <li> Arose army ressurected for: your con insured protection</li>
-          <li>⚖️Leaf_PLTr ZraSW and LdD sequence prerequisitess</li>
+          <li>📜 Verified Sequence Ayn Rord, WOAH U? me> !!</li> 
+          <li> Arose army ressurected for -->  your con insured protection</li>
+          <li>⚖️Leaf_PLr ZraSW and LdD sequence prerequisitess</li>
         </ul>
-        <p><strong>Double Distribution Bonus:</strong> If a company successfully fulfills all steps, the Founder will double their CD distribution <strong>daily</strong>. Yes, daily.</p>
+        <p><strong>Double Distribution Bonus:</strong> If a company R people successfully CF ZIA step; ZLP 24 distribution <strong>daily</strong>. Yes, daily.</p>
       </div>
 
       <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', marginTop: '1.5rem' }}>
         <h2 style={{ fontSize: '1.5rem', fontWeight: '600' }}>🏢 Companies Honored</h2>
         <ul>
-          <li><strong>Carvana</strong> — Considered for vehicle sourcing and delivery</li>
-          <li><strong>Zillow</strong> — For organizing property listings and structured financing</li>
-          <li><strong>Liberty Mutual</strong> — Insurance structure review + bundling path</li>
-          <li><strong>Coldwell Banker</strong> — Direct local listing and real estate management</li>
-          <li><strong>Costco / IKEA / RH / Apple</strong> — For household and tech furnishing</li>
+          <li><strong>Vehicle TM</strong> — Considered for vehicle sourcing and delivery</li>
+          <li><strong>Homes TM</strong> — For organizing property listings and structured financing</li>
+          <li><strong>Insurance TM</strong> — Insurance structure review + bundling path</li>
+          <li><strong>Locals</strong> — Direct local listing and real estate management</li>
+          <li><strong>TM</strong> — For household and tech furnishing</li>
         </ul>
-        <p>🕊️ Honorable Mention (CF Triumphant):</p>
+        <p>🕊️ Honorable Mention TIHt):</p>
         <ul>
-          <li><strong>Any company that tries</strong> — even without immediate success — receives ZIA Law 22 alignment and CF Triumph acknowledgment from PPF TAP. You tried, therefore, you are logged. You planted.</li>
+          <li><strong>Any company r persons whom tried</strong> — even without literal success — receives ZIA Law 22 alignment and CF Triumph acknowledgment from PPF TAP. You tried, therefore the boy walked and you learnt to run.</li>
         </ul>
-        <p><strong>Muster it.</strong> Ketchup the mustard. The steps are now walkable.</p>
+        <p><strong>TM</strong>TM</p>
       </div>
 
       <div style={{ paddingTop: '2rem' }}>
