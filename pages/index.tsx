@@ -9,12 +9,12 @@ export default function Home() {
       <nav style={{ marginTop: '2rem' }}>
         <h3>Navigate:</h3>
         <ul style={{ lineHeight: '1.8' }}>
+          <li><Link href="/aerospace">Aerospace Overview</Link></li>
           <li><Link href="/agi">AGI Interface</Link></li>
           <li><Link href="/pharma">Pharma Test Results</Link></li>
           <li><Link href="/logs/A0/Anomaly01">Anomaly A0-01</Link></li>
-          <li><Link href="/aerospace">Aerospace Overview</Link></li>
           <li><Link href="/api/rami">API: RAMI Node Status</Link></li>
-          <li><Link href="/good-for-you">Wellbeing Tracker</Link></li> 
+          <li><Link href="/good-for-you">bwemc2</Link></li> 
         </ul>
       </nav>
     </div>
