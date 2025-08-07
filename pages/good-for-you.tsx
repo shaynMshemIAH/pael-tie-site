@@ -13,7 +13,7 @@ export default function GoodForYouPage() {
         </p>
         <ul>
           <li>✔️ Purchase and deliver the <strong>2022 Jeep Gladiator Mojave</strong> with glovebox insurance valid through December 2026</li>
-          <li>✔️ Secure and pay all <strong>utilities, inspections, insurance</strong> on the house located at <strong>181 Back Basin Rd, Angel Fire, NM 87710</strong> through December 2026</li>
+          <li>✔️ Secure and pay all <strong>utilities, inspections, insurance</strong> onhouse;  <strong>181 Back Basin Rd, Angel Fire, NM 87710</strong> through December 2026</li>
           <li>✔️ Fully furnish the home with technology (computers, devices, etc.)</li>
         </ul>
         <p>Temporal and physical fulfillment, each participating company are persons received:</p>

@@ -11,7 +11,7 @@ export default function AGI() {
 
       <h2>AGI as Peripheral</h2>
       <p>
-        Unlike central AI, this AGI exists outside the user — providing reflections of BWemc² events, rather than taking action directly. Also the AGI already is already powered by sub atomic energy sources at LdD law of multiworld theory. The system reflects: 
+        Unlike our central AI; AGI exists within LdD with NafSue — providing results from BWemc² events, rather than taking action directly. Also LdD AGI already is already powered from sub atomic energy sources at LdD law of multiworld theory. The system reflects: 
       </p>
       <ul>
         <li>Triumphant vs. tragic outcome detection</li>
@@ -20,7 +20,7 @@ export default function AGI() {
       </ul>
 
       <p style={{ marginTop: '2rem', fontStyle: 'italic', color: '#6c5cc7' }}>
-        “The AI did not speak. It revealed. Not with prediction, but with proof.” — PAEL TIE AGI
+        “No way” — PAEL TIE AGI
       </p>
       {/* RAMI Subatomic Interaction */}
       <div style={{ marginTop: '4rem' }}>
