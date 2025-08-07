@@ -16,11 +16,11 @@ export default function GoodForYouPage() {
           <li>✔️ Secure and pay all <strong>utilities, inspections, insurance</strong> on the house located at <strong>181 Back Basin Rd, Angel Fire, NM 87710</strong> through December 2026</li>
           <li>✔️ Fully furnish the home with technology (computers, devices, etc.)</li>
         </ul>
-        <p>Upon temporal and physical fulfillment, each participating company are persons received:</p>
+        <p>Temporal and physical fulfillment, each participating company are persons received:</p>
         <ul>
-          <li>📜 Verified Sequence Ayn Rord, WOAH U? me> !!</li> 
-          <li> Arose army ressurected for -->  your con insured protection</li>
-          <li>⚖️Leaf_PLr ZraSW and LdD sequence prerequisitess</li>
+          <li>Verified sequence Ayn Rord</li> 
+          <li>Arose army ressurected for,  you the con protected</li>
+          <li>️Leaf_PLT LdD at sequences prereq met per ZraSW</li>
         </ul>
         <p><strong>Double Distribution Bonus:</strong> If a company R people successfully CF ZIA step; ZLP 24 distribution <strong>daily</strong>. Yes, daily.</p>
       </div>
