@@ -12,7 +12,9 @@ export default function Home() {
           <li><Link href="/agi">AGI Interface</Link></li>
           <li><Link href="/pharma">Pharma Test Results</Link></li>
           <li><Link href="/logs/A0/Anomaly01">Anomaly A0-01</Link></li>
+          <li><Link href="/aerospace">Aerospace Overview</Link></li>
           <li><Link href="/api/rami">API: RAMI Node Status</Link></li>
+          <li><Link href="/good-for-you">Wellbeing Tracker</Link></li> 
         </ul>
       </nav>
     </div>
