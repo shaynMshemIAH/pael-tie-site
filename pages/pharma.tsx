@@ -32,15 +32,21 @@ export default function Pharma() {
       <h2>Live Test Results:</h2>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div>
-          <img src="/images/IMG_2103.jpeg" alt="Test 1" width="100%" />
+          <Image 
+            src="/images/IMG_2104.jpeg" 
+            alt="Test 1" 
+            width={600}
+            height={400}
+            style={{ borderRadius: '8px', width: '100%' }}
+          />
           <p><strong>Test 1:</strong> Natural flurries. No ammonia. Regenerative potential freely foreshadowed.</p>
         </div>
         <div>
           <Image 
-            src="/images/IMG_2102.jpeg" 
+            src="/images/IMG_2103.jpeg" 
             alt="Test 2"
-            width={800}
-            height={600}
+            width={600}
+            height={400}
             style={{ borderRadius: '8px', width: '100%' }}
           />
           <p><strong>Test 2:</strong> UV foreshadow. Slight refractance without ammonia. Decay tendency visible.</p>
@@ -49,8 +55,8 @@ export default function Pharma() {
           <Image 
             src="/images/IMG_2104.jpeg"
             alt="Test 3" 
-            width={800}
-            height={600}
+            width={600}
+            height={400}
             style={{ borderRadius: '8px', width: '100%' }}
           />
           <p><strong>Test 3:</strong> Ammonia added. Central decay locked. IV distribution confirmed.</p>
@@ -59,8 +65,8 @@ export default function Pharma() {
           <Image 
             src="/images/IMG_2105.jpeg" 
             alt="Test 4" 
-            width={800}
-            height={600}
+            width={600}
+            height={400}
             style={{ borderRadius: '8px', width: '100%' }}
           />
           <p><strong>Test 4:</strong> Ammonia added. Web flurries locked. Regeneration electro-anchored.</p>
@@ -69,15 +75,15 @@ export default function Pharma() {
           <Image
             src="/images/IMG_2106.jpeg"
             alt="Test 5"
-            width={800}
-            height={600}
+            width={600}
+            height={400}
             style={{ borderRadius: '8px', width: '100%' }}
           />
           <p><strong>Test 5:</strong> Non-ammonia test confirms spontaneous direction — mirrors early flurry activity.</p>
         </div>
         <div>
           <Image
-            src="/images/IMG_2109.jpeg"
+            src="/images/IMG_2111.jpeg"
             alt="Test 6"
             width={800}
             height={600}

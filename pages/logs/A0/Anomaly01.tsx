@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function Anomaly01() {
   return (
     <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
@@ -8,7 +10,13 @@ export default function Anomaly01() {
 
       <h2>📽️ Captured Frame</h2>
       <p> Image not available - to be uploaded upon formal proof release.</p>
-      #<img src="/assets/images/Anomaly_A0-01_Frame" alt="Anomaly A0-01 Frame" style={{ maxWidth: '100%' }} />
+      <Image 
+        src="images/nh3_dome_test_01.jpg" 
+        alt="NH4 Dome Test Visual" 
+        width={600}
+        height={400}
+        style={{ borderRadius: '8px', width: '100%' }} 
+      />
 
       <h2>🧪 Hypothesis</h2>
       <p>Subatomic CF energy, originating from brainwave intention and crossing through Bwemc², can power or trigger responses in a sensor <strong>without physical circuit closure</strong>.</p>
