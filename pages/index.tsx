@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div style={{ fontFamily: 'Arial', padding: '2rem' }}>
       <h1>Welcome to PAEL TIE</h1>
-      <p>Patent Application 63/837,074 Leaf_PLT try: Thank You!!! </p>
+      <p>Patent Pending!!! 63/837,074 Leaf_PLT try: Thank You!!! </p>
 
       <nav style={{ marginTop: '2rem' }}>
         <h3>Navigate:</h3>
