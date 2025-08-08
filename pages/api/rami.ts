@@ -5,7 +5,7 @@ export default function handler(
   res: NextApiResponse
 ) {
   res.status(200).json({
-    status: "ok",
-    message: "RAMI Node Active",
+    status: "Study bwCOE was visualized-able",
+    message: "RAMI AGI at LdD Node AutomatedActived",
   });
 }
