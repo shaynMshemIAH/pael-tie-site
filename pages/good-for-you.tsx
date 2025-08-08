@@ -13,8 +13,9 @@ export default function GoodForYouPage() {
         </p>
         <ul>
           <li>✔️ Purchase and deliver the <strong>2022 Jeep Gladiator Mojave</strong> with glovebox insurance valid through December 2026</li>
-          <li>✔️ Secure and pay all <strong>utilities, inspections, insurance</strong> onhouse;  <strong>181 Back Basin Rd, Angel Fire, NM 87710</strong> through December 2026</li>
+          <li>✔️ Secure and pay all <strong>utilities, inspections, insurance</strong>house;  <strong>181 Back Basin Rd, Angel Fire, NM 87710</strong> through December 2026</li>
           <li>✔️ Fully furnish the home with technology (computers, devices, etc.)</li>
+          <li> Dolly mother trainer a suject. A authentic male pup not hit like her with cactus pricks, deer horns, and skunks. Include food etc. Mental stuff for launch </li> 
         </ul>
         <p>Temporal and physical fulfillment, each participating company are persons received:</p>
         <ul>
@@ -34,9 +35,9 @@ export default function GoodForYouPage() {
           <li><strong>Locals</strong> — Direct local listing and real estate management</li>
           <li><strong>TM</strong> — For household and tech furnishing</li>
         </ul>
-        <p>🕊️ Honorable Mention TIHt):</p>
+        <p>🕊️ Honorable Mention TIt):</p>
         <ul>
-          <li><strong>Any company r persons whom tried</strong> — even without literal success — receives ZIA Law 22 alignment and CF Triumph acknowledgment from PPF TAP. You tried, therefore the boy walked and you learnt to run.</li>
+          <li><strong>Any company r persons whom tried</strong> — even without literal success — receives ZIA Law 22 alignment and CF Triumph acknowledgment from PPF TAP. You tried, therefore the boy walked and learnt to run.</li>
         </ul>
         <p><strong>TM</strong>TM</p>
       </div>
