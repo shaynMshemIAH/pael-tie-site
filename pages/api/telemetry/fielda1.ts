@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 const TOKEN =
   process.env.A1_SITE_TOKEN ||
   process.env.PAEL_TIE_SITE_INGEST_TOKEN ||
-  'dev-token';
+  null;
 
 let latest: any = null;
 

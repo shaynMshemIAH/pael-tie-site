@@ -16,7 +16,7 @@ export default function Home() {
           <li><Link href="/api/rami">API: RAMI Node Status</Link></li>
           <li><Link href="/good-for-you">bwemc2</Link></li> 
           <li><a href="/api/telemetry?path=summary" target="_blank" rel="nonreferrer">Telemetry Summary (JSON)</a></li>
-          <li><Link href="/telemetry">Live Telemetry</Link></li>        
+          <li><Link href="/telemetry/b1">Live Telemetry (FieldB1 Past)</Link></li>        
         </ul>
       </nav>
     </div>

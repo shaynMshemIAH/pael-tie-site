@@ -8,10 +8,10 @@ from pathlib import Path
 app = FastAPI(title="COE Ingest API")
 
 # Comma-separated lists. Each URL must have a matching token (same index).
-A1_FORWARD_URLS   = [u.strip() for u in os.getenv("A1_FORWARD_URLS", "").split(",") if u.strip()]
-A1_FORWARD_TOKENS = [t.strip() for t in os.getenv("A1_FORWARD_TOKENS", "").split(",") if t.strip()]
-B1_FORWARD_URLS   = [u.strip() for u in os.getenv("B1_FORWARD_URLS", "").split(",") if u.strip()]
-B1_FORWARD_TOKENS = [t.strip() for t in os.getenv("B1_FORWARD_TOKENS", "").split(",") if t.strip()]
+A1_FORWARD_URLS   = [u.strip() for u in os.getenv("A1_FORWARD_URLS", "https://pael-tie-site.vercel.app/api/telemetry/fielda1").split(",") if u.strip()]
+A1_FORWARD_TOKENS = [t.strip() for t in os.getenv("A1_FORWARD_TOKENS", "244f7321ea07f293224c7abc9656ff70e3af424592259efcba6cf053e99c3030").split(",") if t.strip()]
+B1_FORWARD_URLS   = [u.strip() for u in os.getenv("B1_FORWARD_URLS", "https://pael-tie-site.vercel.app/api/telemetry/fieldb1").split(",") if u.strip()]
+B1_FORWARD_TOKENS = [t.strip() for t in os.getenv("B1_FORWARD_TOKENS", "a8af4a544934b6b2f6a1d1ff4013adcfcfe11611ef81bc4bd747be0441406694").split(",") if t.strip()]
 SITE_TIMEOUT_S    = float(os.getenv("SITE_TIMEOUT", "8.0"))
 
 # ----- Storage -----
@@ -30,8 +30,8 @@ k2 = os.getenv("FIELD_GATE_TOKEN", "").strip()
 if k2: B1_KEYS.add(k2)
 
 # ----- Forward (B1) -----
-SITE_INGEST_URL   = os.getenv("PAEL_TIE_SITE_INGEST_URL", "").strip()  # e.g. https://pael-tie-site.vercel.app/api/telemetry/fieldb1
-SITE_INGEST_TOKEN = os.getenv("PAEL_TIE_SITE_INGEST_TOKEN", "").strip()
+SITE_INGEST_URL   = os.getenv("PAEL_TIE_SITE_INGEST_URL", "https://pael-tie-site.vercel.app/api/telemetry/fieldb1").strip()  # e.g. https://pael-tie-site.vercel.app/api/telemetry/fieldb1
+SITE_INGEST_TOKEN = os.getenv("PAEL_TIE_SITE_INGEST_TOKEN", "a0d56eb64764a78ee59883fd1416e24fda928b2a1117f6512a0a1ce4b163e878").strip()
 SITE_TIMEOUT_S    = float(os.getenv("PAEL_TIE_SITE_TIMEOUT", "8.0"))
 
 # ----- Helpers -----
