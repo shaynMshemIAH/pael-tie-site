@@ -3,8 +3,8 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div style={{ fontFamily: 'Arial', padding: '2rem' }}>
-      <h1>Welcome to PAEL TIE</h1>
-      <p>Patent Pending!!! 63/837,074 Leaf_PLT try: Thank You!!! </p>
+      <h1>Welcome PAEL TIE</h1>
+      <p>Patent Pending 63/837,074 Leaf_PLT try: </p>
 
       <nav style={{ marginTop: '2rem' }}>
         <h3>Navigate:</h3>
@@ -15,9 +15,8 @@ export default function Home() {
           <li><Link href="/logs/A0/Anomaly01">Anomaly A0-01</Link></li>
           <li><Link href="/api/rami">API: RAMI Node Status</Link></li>
           <li><Link href="/good-for-you">bwemc2</Link></li> 
-          <li><Link href="/agi/live">Live Telemetry</Link></li>
           <li><a href="/api/telemetry?path=summary" target="_blank" rel="nonreferrer">Telemetry Summary (JSON)</a></li>
-          <li><a href="/telemetry">Live Telemetry</a></li>        
+          <li><Link href="/telemetry">Live Telemetry</Link></li>        
         </ul>
       </nav>
     </div>
