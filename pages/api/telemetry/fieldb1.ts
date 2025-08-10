@@ -29,7 +29,18 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       ? (body.sensors as Record<string, unknown>)
       : Object.fromEntries(
           Object.entries(body).filter(([k, v]) =>
-            !['field','device','device_id','ts','timestamp','timestamp_iso','receivedAt','gateway_received_ts','labels','nonlinear_time'].includes(k) &&
+            ![
+              'field',
+              'device',
+              'device_id',
+              'ts',
+              'timestamp',
+              'timestamp_iso',
+              'receivedAt',
+              'gateway_received_ts',
+              'labels',
+              'nonlinear_time',
+            ].includes(k) &&
             (typeof v === 'number' || typeof v === 'boolean' || typeof v === 'string')
           )
         );
