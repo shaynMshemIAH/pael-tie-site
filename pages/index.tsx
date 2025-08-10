@@ -17,6 +17,7 @@ export default function Home() {
           <li><Link href="/good-for-you">bwemc2</Link></li> 
           <li><Link href="/agi/live">Live Telemetry</Link></li>
           <li><a href="/api/telemetry?path=summary" target="_blank" rel="nonreferrer">Telemetry Summary (JSON)</a></li>
+          <li><a href="/telemetry">Live Telemetry</a></li>        
         </ul>
       </nav>
     </div>
