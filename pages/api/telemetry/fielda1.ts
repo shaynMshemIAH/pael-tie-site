@@ -2,9 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const TOKEN =
-  process.env.uzSaV5XcbhivvPCxTqVS-VF3aYFI5gLLDmHFPOIAXFE ||
-  process.env.dfgjkhdskhSDFGer1uiydffgodfgojrofgoSEG3vjo || 'dev-token';
-  
+  process.env.A1_SITE_TOKEN ||
+  process.env.PAEL_TIE_SITE_INGEST_TOKEN ||
+  'dev-token';
 
 let latest: any = null;
 

@@ -2,8 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const TOKEN =
-  process.env.askdjfhaskdhgfASDFIJSsdgkh47askdjfh4DFGKkdshf ||
-  process.env.dfgjkhdskhSDFGer1uiydffgodfgojrofgoSEG3vjo || 'dev-token';
+  process.env.B1_SITE_TOKEN ||
+  process.env.PAEL_TIE_SITE_INGEST_TOKEN ||
+  'dev-token';
 
 let latest: any = null;
 
