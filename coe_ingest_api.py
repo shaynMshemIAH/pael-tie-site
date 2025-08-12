@@ -22,11 +22,11 @@ RECENT = deque(maxlen=BUF_MAX)
 
 # ----- Keys -----
 COE_KEYS = {k.strip() for k in os.getenv("COE_API_KEYS", "").split(",") if k.strip()}
-k1 = os.getenv("COE_API_KEY", "").strip()
+k1 = os.getenv("COE_API_KEY", "2c343b09de84f80482550c06f20da56183bb638945ca9240d55bb6fcb7884ade").strip()
 if k1: COE_KEYS.add(k1)
 
 B1_KEYS = {k.strip() for k in os.getenv("FIELD_GATE_KEYS", "").split(",") if k.strip()}
-k2 = os.getenv("FIELD_GATE_TOKEN", "").strip()
+k2 = os.getenv("FIELD_GATE_TOKEN", "6f826aa051dbb40aaec194e88be08a9ff9a7622bbf6672d6872ea8677b2f065a").strip()
 if k2: B1_KEYS.add(k2)
 
 # ----- Forward (B1) -----

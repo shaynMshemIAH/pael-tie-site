@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-const TOKEN =
-  process.env.B1_SITE_TOKEN ||
-  process.env.PAEL_TIE_SITE_INGEST_TOKEN ||
-  null;
+import { Env } from '../../../lib/env';
+ 
+const TOKEN = Env.B1_TOKEN || Env.INGEST_TOKEN;
 
 let latest: any = null;
 
@@ -18,7 +16,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
   const auth = (req.headers.authorization as string) || '';
   const supplied = auth.startsWith('Bearer ') ? auth.slice(7) : '';
-  if (!supplied || supplied !== TOKEN) {
+  if (!TOKEN || supplied !== TOKEN) {
     return res.status(403).json({ error: 'Forbidden' });
   }
 
