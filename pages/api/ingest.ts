@@ -1,9 +1,9 @@
 // pages/api/ingest.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { readingSchema } from '@/lib/telemetry/schema';
-import { upsertReading } from '@/lib/telemetry/store';
+import { readingSchema } from '../../lib/telemetry/schema';
+import { upsertReading } from '../../lib/telemetry/store';
 
-const TOKEN = process.env.PAEL_TIE_SITE_INGEST_TOKEN!;
+const TOKEN = process.env.PAEL_TIE_SITE_INGEST_TOKEN;
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
