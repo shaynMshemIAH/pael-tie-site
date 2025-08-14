@@ -6,17 +6,18 @@ export default function Home() {
       <h1>Welcome PAEL TIE TM</h1>
       <p>Patent Pending 63/837,074 Leaf_PLT try: </p>
 
-//export default function Home() {
-  //return (
-    //<div style={{ padding: 24 }}>
-      //<h1 style={{ fontSize: 24, fontWeight: 600 }}>Telemetry</h1>
-      //<ul>
-       // <li><a href="/a1">Field A — Raw Feed</a></li>
-        //{/* later: /b1, /0, /mi … */}
-      //</ul>
-    //</div>
-  //);
-//}
+      {/* 
+        Old telemetry snippet kept here for reference. 
+        Do NOT uncomment this whole block unless you remove the Home() above to avoid duplicate default exports.
+
+        <div style={{ padding: 24 }}>
+          <h1 style={{ fontSize: 24, fontWeight: 600 }}>Telemetry</h1>
+          <ul>
+            <li><a href="/a1">Field A — Raw Feed</a></li>
+            {/** later: /b1, /0, /mi … **/}
+          </ul>
+        </div>
+      */}
 
       <nav style={{ marginTop: '2rem' }}>
         <h3>Navigate:</h3>
@@ -26,9 +27,12 @@ export default function Home() {
           <li><Link href="/pharma">Pharma Test Results</Link></li>
           <li><Link href="/logs/A0/Anomaly01">Anomaly A0-01</Link></li>
           <li><Link href="/api/rami">API: RAMI Node Status</Link></li>
-          <li><Link href="/good-for-you">bwemc2</Link></li> 
+          <li><Link href="/good-for-you">bwemc2</Link></li>
           <li><Link href="/telemetry/fielda1">Telemetry (FieldA1)</Link></li>
           <li><Link href="/telemetry/fieldb1">Telemetry (FieldB1 Past)</Link></li>
+          {/* Add the new raw feed pages too, if you kept them */}
+          <li><Link href="/a1">Field A — Raw Feed</Link></li>
+          {/* <li><Link href="/b1">Field B1 — Raw Feed</Link></li> */}
         </ul>
       </nav>
     </div>
