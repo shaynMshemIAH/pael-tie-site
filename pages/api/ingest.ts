@@ -1,5 +1,9 @@
 // pages/api/ingest.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
+// before
+// import { readingSchema } from '@/lib/telemetry/schema';
+// import { upsertReading } from '@/lib/telemetry/store';
+// after
 import { readingSchema } from '../../lib/telemetry/schema';
 import { upsertReading } from '../../lib/telemetry/store';
 

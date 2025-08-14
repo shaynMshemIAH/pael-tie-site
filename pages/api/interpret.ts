@@ -1,7 +1,7 @@
 // pages/api/interpret.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { interpretationSchema } from '@/lib/telemetry/schema';
-import { addInterpretation } from '@/lib/telemetry/store';
+import { interpretationSchema } from '../../lib/telemetry/schema';
+import { addInterpretation } from '../../lib/telemetry/store';
 
 const TOKEN = process.env.PAEL_TIE_SITE_INGEST_TOKEN!;
 
