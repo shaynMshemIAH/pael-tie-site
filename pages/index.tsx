@@ -7,14 +7,6 @@ export default function Home() {
       <p>Patent Pending 63/837,074 Leaf_PLT try: </p>
 
       {/* Old telemetry snippet kept for reference only.
-      <div style={{ padding: 24 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 600 }}>Telemetry</h1>
-        <ul>
-          <li><a href="/a1">Field A — Raw Feed</a></li>
-          {/** later: /b1, /0, /mi … **/}
-        </ul>
-      </div>
-      */}
 
       <nav style={{ marginTop: '2rem' }}>
         <h3>Navigate:</h3>
