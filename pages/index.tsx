@@ -3,8 +3,20 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div style={{ fontFamily: 'Arial', padding: '2rem' }}>
-      <h1>Welcome PAEL TIE</h1>
+      <h1>Welcome PAEL TIE TM</h1>
       <p>Patent Pending 63/837,074 Leaf_PLT try: </p>
+
+//export default function Home() {
+  //return (
+    //<div style={{ padding: 24 }}>
+      //<h1 style={{ fontSize: 24, fontWeight: 600 }}>Telemetry</h1>
+      //<ul>
+       // <li><a href="/a1">Field A — Raw Feed</a></li>
+        //{/* later: /b1, /0, /mi … */}
+      //</ul>
+    //</div>
+  //);
+//}
 
       <nav style={{ marginTop: '2rem' }}>
         <h3>Navigate:</h3>

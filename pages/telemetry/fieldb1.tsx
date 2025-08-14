@@ -1,22 +1,77 @@
-// pages/telemetry/fielda1.tsx and fieldb1.tsx
-import type { GetServerSideProps } from 'next';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
 
-type Json = Record<string, unknown>;
-type Props = { data: Json };
+function useLatest(path: string, intervalMs = 1000) {
+  const [data, setData] = React.useState<any | null>(null);
+  const [err, setErr] = React.useState<string | null>(null);
 
-export default function Page({ data }: Props) {
+  React.useEffect(() => {
+    let stop = false;
+    let t: any;
+
+    async function tick() {
+      try {
+        const r = await fetch(path, { cache: 'no-store' });
+        const ct = r.headers.get('content-type') || '';
+        if (!r.ok) {
+          const text = await r.text();
+          throw new Error(`HTTP ${r.status}: ${text.slice(0, 120)}`);
+        }
+        if (!ct.includes('application/json')) {
+          const text = await r.text();
+          throw new Error(`non-JSON response: ${text.slice(0, 120)}`);
+        }
+        const j = await r.json();
+        if (!stop) {
+          setData(j);
+          setErr(null);
+        }
+      } catch (e: any) {
+        if (!stop) setErr(e?.message || 'fetch failed');
+      } finally {
+        if (!stop) t = setTimeout(tick, intervalMs);
+      }
+    }
+
+    tick();
+    return () => {
+      stop = true;
+      clearTimeout(t);
+    };
+  }, [path, intervalMs]);
+
+  return { data, err };
+}
+
+export default function FieldB1Page() {
+  // IMPORTANT: hit the API route, not the page route
+  const { data, err } = useLatest('/api/telemetry/fieldb1', 1000);
+
   return (
-    <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-      {JSON.stringify(data, null, 2)}
-    </pre>
+    <main style={{ fontFamily: 'system-ui', padding: 16, maxWidth: 900, margin: '0 auto' }}>
+      <h1>FieldB1 — Live Telemetry</h1>
+      {err && <div style={{ color: 'crimson' }}>fetch error: {err}</div>}
+      {!data ? (
+        <div style={{ color: '#666' }}>No data yet…</div>
+      ) : (
+        <>
+          <div style={{ marginBottom: 8 }}>
+            <strong>field:</strong> <code>{data.field ?? 'FieldB1'}</code>{' '}
+            <span style={{ opacity: 0.6 }}>|</span>{' '}
+            <strong>ts:</strong> <code>{data.timestamp_iso}</code>
+          </div>
+          <h3>Sensors</h3>
+          <pre style={{ background: '#111', color: '#0f0', padding: 12, borderRadius: 6 }}>
+            {JSON.stringify(data.sensors ?? {}, null, 2)}
+          </pre>
+          <h3>Full payload</h3>
+          <pre style={{ background: '#111', color: '#9ef', padding: 12, borderRadius: 6 }}>
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        </>
+      )}
+    </main>
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-  const base = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : `http://${ctx.req.headers.host}`;
-  const res = await fetch(`${base}/api/telemetry/fielda1`, { cache: 'no-store' }); // change to fieldb1 on that page
-  const data = (await res.json()) as Json;
-  return { props: { data } };
-};
+// DO NOT export getStaticProps / getServerSideProps from this page.
