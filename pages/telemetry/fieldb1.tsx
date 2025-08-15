@@ -21,7 +21,20 @@ function useLatest(path: string, intervalMs = 1000) {
           const text = await r.text();
           throw new Error(`non-JSON response: ${text.slice(0, 120)}`);
         }
-        const j = await r.json();
+       const j = await r.json();
+       const latest = Array.isArray(j?.samples) ? j.samples[0] : null;
+
+       const mapped = latest
+         ? {
+             ok: true,
+             field: 'FieldB1',
+             timestamp_iso: latest.ts,
+             sensors: latest.sensors ?? {},   // B1 already nests sensors
+             full: j,
+           }
+         : { ok: false, full: j };
+
+       setData(mapped);
         if (!stop) {
           setData(j);
           setErr(null);
