@@ -15,6 +15,7 @@
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
     "swr": "^2.3.6",
+    "vercel": "^45.0.9",
     "zod": "^4.0.17"
   },
   "devDependencies": {

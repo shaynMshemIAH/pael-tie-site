@@ -1,6 +1,6 @@
 // pages/api/field/[id].ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getFieldState } from '@/lib/telemetry/store';
+import { getFieldState } from '../../lib/telemetry/store';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const id = req.query.id as 'A'|'0'|'B'|'MI';

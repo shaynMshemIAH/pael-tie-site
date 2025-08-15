@@ -1,28 +1,27 @@
+import React from 'react';
 import Link from 'next/link';
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
-    <div style={{ fontFamily: 'Arial', padding: '2rem' }}>
+    <main style={{ fontFamily: 'Arial, sans-serif', padding: '2rem' }}>
       <h1>Welcome PAEL TIE TM</h1>
-      <p>Patent Pending 63/837,074 Leaf_PLT try: </p>
-
-      {/* Old telemetry snippet kept for reference only.
+      <p>Patent Pending 63/837,074 Leaf_PLT try:</p>
 
       <nav style={{ marginTop: '2rem' }}>
         <h3>Navigate:</h3>
-        <ul style={{ lineHeight: '1.8' }}>
+        <ul style={{ lineHeight: 1.8 }}>
+          <li><Link href="/a1">Field A — Raw Feed</Link></li>
+          <li><Link href="/b1">Field B1 — Raw Feed</Link></li>
+          <li><Link href="/telemetry/fielda1">Telemetry (FieldA1)</Link></li>
+          <li><Link href="/telemetry/fieldb1">Telemetry (FieldB1 Past)</Link></li>
           <li><Link href="/aerospace">Aerospace Overview</Link></li>
           <li><Link href="/agi">AGI Interface</Link></li>
           <li><Link href="/pharma">Pharma Test Results</Link></li>
           <li><Link href="/logs/A0/Anomaly01">Anomaly A0-01</Link></li>
           <li><Link href="/api/rami">API: RAMI Node Status</Link></li>
           <li><Link href="/good-for-you">bwemc2</Link></li>
-          <li><Link href="/telemetry/fielda1">Telemetry (FieldA1)</Link></li>
-          <li><Link href="/telemetry/fieldb1">Telemetry (FieldB1 Past)</Link></li>
-          <li><Link href="/a1">Field A — Raw Feed</Link></li>
-          {/* <li><Link href="/b1">Field B1 — Raw Feed</Link></li> */}
         </ul>
       </nav>
-    </div>
+    </main>
   );
 }
