@@ -3,11 +3,11 @@ import Link from 'next/link';
 
 export default function Home(): JSX.Element {
   return (
-    <main style={{ fontFamily: "Arial, sans-serif", padding: "2rem" }}>
-      <h1>Welcome PAEL TIE</h1>
-      <p>Patent Pending 63/837,074 — Leaf_PLT</p>
+    <main style={{ fontFamily: 'Arial, sans-serif', padding: '2rem' }}>
+      <h1>Welcome PAEL TIE TM trademark</h1>
+      <p>Patent Pending 63/837,074 Leaf_PLT try:</p>
 
-      <nav style={{ marginTop: "2rem" }}>
+      <nav style={{ marginTop: '2rem' }}>
         <h3>Navigate:</h3>
         <ul style={{ lineHeight: 1.8 }}>
           <li><Link href="/a1">Field A — Raw Feed</Link></li>
@@ -16,7 +16,7 @@ export default function Home(): JSX.Element {
           <li><Link href="/telemetry/field01">Telemetry (Field01 Present)</Link></li>
           <li><Link href="/telemetry/fieldb1">Telemetry (FieldB1 Past)</Link></li>
           <li><Link href="/telemetry/fieldmi1">Telemetry (FieldMI MagRec)</Link></li>
-          <li><Link href="/rami">CUDA-Q</Link></li>
+          <li><Linl href-"/rami">CUDA-Q</Link></li> 
           <li><Link href="/aerospace">Aerospace Overview</Link></li>
           <li><Link href="/agi">AGI Interface</Link></li>
           <li><Link href="/pharma">Pharma Test Results</Link></li>

@@ -1,51 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { NextApiRequest, NextApiResponse } from 'next';
-// use a RELATIVE import to avoid alias issues in prod
-import { Env } from '../../../lib/env';
+// pages/api/telemetry/fielda1.ts
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { kv } from '@vercel/kv'
 
-export const config = { runtime: 'nodejs' };
+export const config = { runtime: 'nodejs' }
 
-let latest: any = null;
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
-    const TOKEN = Env.A1_TOKEN || Env.INGEST_TOKEN || '';
-
-    if (req.method === 'GET') {
-      res.setHeader('Cache-Control', 'no-store');
-      return res.status(200).json(latest ?? { ok: false });
+    if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) {
+      throw new Error('KV env missing')
     }
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Method not allowed' });
+    const items = await kv.lrange('telemetry:a1', 0, 0)
+    const latest = items.length ? JSON.parse(String(items[0])) : null
+    res.setHeader('Cache-Control', 'no-store')
+    return res.status(200).json(latest ?? { ok: false })
+  } catch (e:any) {
+    console.error('[fielda1] read error', { name: e?.name, msg: e?.message })
+    // optional: fallback to ingest GET so the page still works even if KV is down
+    try {
+      const resp = await fetch(`${process.env.VERCEL_URL?.startsWith('http')?process.env.VERCEL_URL:'https://pael-tie-site.vercel.app'}/api/a1/ingest?n=1`)
+      const data = await resp.json()
+      const latest = (data.items && data.items[0]) || null
+      return res.status(200).json(latest ?? { ok: false })
+    } catch {
+      return res.status(500).json({ error: 'Internal Server Error' })
     }
-
-    const supplied = ((req.headers.authorization as string) || '').replace(/^Bearer\s+/i, '');
-    if (!TOKEN || supplied !== TOKEN) {
-      console.log('[fielda1] 403', { haveToken: !!TOKEN, suppliedLen: supplied.length });
-      return res.status(403).json({ error: 'Forbidden' });
-    }
-
-    const body = (req.body ?? {}) as Record<string, unknown>;
-    const sensors =
-      typeof (body as any).sensors === 'object' && body.sensors !== null ? (body as any).sensors : {};
-
-    latest = {
-      field: (body as any).field ?? 'FieldA1',
-      timestamp_iso:
-        (body as any).timestamp_iso ??
-        (body as any).timestamp ??
-        (body as any).ts ??
-        new Date().toISOString(),
-      sensors,
-      labels: (body as any).labels ?? null,
-      nonlinear_time: (body as any).nonlinear_time ?? null,
-      gateway_received_ts: (body as any).gateway_received_ts ?? null,
-      device: (body as any).device ?? (body as any).device_id ?? null,
-    };
-
-    return res.status(200).json({ ok: true });
-  } catch (err: any) {
-    console.error('[fielda1] 500:', err?.message || err);
-    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }

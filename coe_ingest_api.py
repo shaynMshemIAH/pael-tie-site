@@ -6,13 +6,27 @@ from collections import deque
 from pathlib import Path
 
 app = FastAPI(title="COE Ingest API")
+FORWARD_HEADER = os.getenv("FORWARD_HEADER", "x-ingest-token")
 
-# Comma-separated lists. Each URL must have a matching token (same index).
-A1_FORWARD_URLS   = [u.strip() for u in os.getenv("A1_FORWARD_URLS", "https://pael-tie-site.vercel.app/api/telemetry/fielda1").split(",") if u.strip()]
+A1_FORWARD_URLS   = [u.strip() for u in os.getenv("A1_FORWARD_URLS", "https://pael-tie-site.vercel.app/telemetry/fielda1").split(",") if u.strip()]
 A1_FORWARD_TOKENS = [t.strip() for t in os.getenv("A1_FORWARD_TOKENS", "244f7321ea07f293224c7abc9656ff70e3af424592259efcba6cf053e99c3030").split(",") if t.strip()]
-B1_FORWARD_URLS   = [u.strip() for u in os.getenv("B1_FORWARD_URLS", "https://pael-tie-site.vercel.app/api/telemetry/fieldb1").split(",") if u.strip()]
+B1_FORWARD_URLS   = [u.strip() for u in os.getenv("B1_FORWARD_URLS", "https://pael-tie-site.vercel.app/telemetry/fieldb1").split(",") if u.strip()]
 B1_FORWARD_TOKENS = [t.strip() for t in os.getenv("B1_FORWARD_TOKENS", "a8af4a544934b6b2f6a1d1ff4013adcfcfe11611ef81bc4bd747be0441406694").split(",") if t.strip()]
 SITE_TIMEOUT_S    = float(os.getenv("SITE_TIMEOUT", "8.0"))
+
+FIELD01_FORWARD_URL   = os.getenv(
+    "FIELD01_FORWARD_URL",
+    "https://pael-tie-site.vercel.app/telemetry/field01"
+).strip()
+
+FIELD01_FORWARD_TOKEN = os.getenv(
+    "FIELD01_FORWARD_TOKEN",
+    "590gjlgij0956uiertokrpotierotiertipo5gfe34owpoif3poseok8k4tpoir3"
+).strip()
+
+print("[cfg] FIELD01_FORWARD_URL =", FIELD01_FORWARD_URL)
+print("[cfg] FIELD01_FORWARD_TOKEN len =", len(FIELD01_FORWARD_TOKEN))
+print("[cfg] FORWARD_HEADER =", FORWARD_HEADER)
 
 # ----- Storage -----
 BUF_MAX = int(os.getenv("COE_BUF_MAX", "2000"))
@@ -93,20 +107,64 @@ async def _forward_b1(p: dict):
         # best-effort; don't break ingest
         pass
 
+def _dest_pairs_for_field(field_id: str):
+    fid = (field_id or "").lower()
+    if fid in ("field01", "field-01", "f01"):
+        return [(FIELD01_FORWARD_URL, FIELD01_FORWARD_TOKEN)]
+    if fid in ("fielda1", "a1"): return _pairs(A1_FORWARD_URLS, A1_FORWARD_TOKENS)
+    if fid in ("fieldb1", "b1"): return _pairs(B1_FORWARD_URLS, B1_FORWARD_TOKENS)
+    return [] 
+
 # ----- Routes -----
 @app.get("/health", response_class=PlainTextResponse)
 async def health(): return "ingest alive\n"
 
+@app.get("/ingest/health", response_class=PlainTextResponse)
+async def health_ingest_alias():
+    return "ingest alive\n"
+
 @app.get("/healthz")
 async def healthz(): return {"ok": True, "ts": int(time.time())}
 
-# A1 (COE) — /ingest
-@app.post("/ingest", response_class=PlainTextResponse)
+@app.post("/ingest")
+async def ingest_legacy(req: Request):
+    return await ingest_field(req)
+
+@app.post("/ingest/field")
+async def ingest_field(req: Request):
+    # auth + read body
+    h = {k.lower(): v for k,v in req.headers.items()}
+    auth = h.get("authorization","")
+    if not (auth.startswith("Bearer ") and auth.split(" ",1)[1] in COE_KEYS):
+        raise HTTPException(status_code=401, detail="unauthorized")
+
+    body = await req.json()
+    field_id = (body.get("field_id") or "Field01")
+    body = _stamp(body); _store(body)
+    pairs = _dest_pairs_for_field(field_id)   # maps Field01 → /api/telemetry/field01
+    await _forward_many(pairs, body)
+    return JSONResponse({"ok": True, "field": field_id})
+
+# A1 (COE) — /ingest/a1
+@app.post("/ingest/a1", response_class=PlainTextResponse)
 async def ingest_a1(request: Request):
     h = _hmap(request.headers)
-    if not _auth_ok(h, COE_KEYS):vraise HTTPException(status_code=401, detail="bad key")
-    p = _stamp(await request.json()); _store(p)
-    asyncio.create_task(_forward_many(_pairs(A1_FORWARD_URLS, A1_FORWARD_TOKENS), p))
+    if not _auth_ok(h, COE_KEYS):  # same auth you use for /ingest
+        raise HTTPException(status_code=401, detail="bad key")
+
+    body = await request.json()
+    p = _stamp(body)  # add gateway_received_ts or any metadata you like
+
+    # forward to site(s)
+    async def fwd(url, tok):
+        hdr = {FORWARD_HEADER: tok, "Content-Type": "application/json"}
+        async with httpx.AsyncClient(timeout=SITE_TIMEOUT_S) as client:
+            r = await client.post(url, headers=hdr, json=p)
+            if r.status_code >= 300:
+                raise HTTPException(status_code=502,
+                                    detail=f"forward failed {r.status_code}: {r.text}")
+
+    await asyncio.gather(*[fwd(u, t) for u, t in zip(A1_FORWARD_URLS, A1_FORWARD_TOKENS)])
     return "ok\n"
 
 # B1 (FieldB1) — /ingest/fieldb1
@@ -117,6 +175,17 @@ async def ingest_b1(request: Request):
     p = _stamp(await request.json()); _store(p)
     asyncio.create_task(_forward_many(_pairs(B1_FORWARD_URLS, B1_FORWARD_TOKENS), p))
     return "ok\n"
+
+@app.post("/ingest/field01")
+async def ingest_field01(req: Request):
+    h = _hmap(req.headers)
+    if not _auth_ok(h, COE_KEYS):
+        raise HTTPException(status_code=401, detail="unauthorized")
+    body = await req.json()
+    body["field_id"] = "Field01"
+    body = _stamp(body); _store(body)
+    await _forward_many([(FIELD01_FORWARD_URL, FIELD01_FORWARD_TOKEN)], body)
+    return JSONResponse({"ok": True, "field": "Field01"})
 
 @app.get("/recent")
 async def recent(n: int = 50):
