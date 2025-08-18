@@ -10,8 +10,6 @@ export default function Home(): JSX.Element {
       <nav style={{ marginTop: "2rem" }}>
         <h3>Navigate:</h3>
         <ul style={{ lineHeight: 1.8 }}>
-          <li><Link href="/a1">Field A — Raw Feed</Link></li>
-          <li><Link href="/b1">Field B1 — Raw Feed</Link></li>
           <li><Link href="/telemetry/fielda1">Telemetry (FieldA1 Future)</Link></li>
           <li><Link href="/telemetry/field01">Telemetry (Field01 Present)</Link></li>
           <li><Link href="/telemetry/fieldb1">Telemetry (FieldB1 Past)</Link></li>
@@ -21,7 +19,6 @@ export default function Home(): JSX.Element {
           <li><Link href="/agi">AGI Interface</Link></li>
           <li><Link href="/pharma">Pharma Test Results</Link></li>
           <li><Link href="/logs/A0/Anomaly01">Anomaly A0-01</Link></li>
-          <li><Link href="/api/rami">API: RAMI Node Status</Link></li>
           <li><Link href="/good-for-you">bwemc2</Link></li>
         </ul>
       </nav>
