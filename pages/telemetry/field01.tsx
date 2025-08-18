@@ -1,61 +1,90 @@
-// pages/telemetry/field01.tsx
-import useSWR from 'swr';
-const fetcher = (u: string) => fetch(u).then(r => r.json());
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
 
-export default function Field01() {
-  const { data } = useSWR('/api/telemetry/field01', fetcher, { refreshInterval: 1500 });
-  const status   = data?.status ?? [];
-  const readings = data?.readings ?? [];
-  const interps  = data?.interpretations ?? [];
+function useLatest(path: string, intervalMs = 1000) {
+  const [data, setData] = React.useState<any | null>(null);
+  const [err, setErr] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    let stop = false;
+    let t: any;
+
+    async function tick() {
+      try {
+        const r = await fetch(path, { cache: 'no-store' });
+        const ct = r.headers.get('content-type') || '';
+        if (!r.ok) {
+          const text = await r.text();
+          throw new Error(`HTTP ${r.status}: ${text.slice(0, 120)}`);
+        }
+        if (!ct.includes('application/json')) {
+          const text = await r.text();
+          throw new Error(`non-JSON response: ${text.slice(0, 120)}`);
+        }
+       const j = await r.json();
+       const latest = Array.isArray(j?.samples) ? j.samples[0] : null;
+
+       const mapped = latest
+         ? {
+             ok: true,
+             field: 'Field01',
+             timestamp_iso: latest.ts,
+             sensors: latest.sensors ?? {},   // 01 already nests sensors
+             full: j,
+           }
+         : { ok: false, full: j };
+
+       setData(mapped);
+        if (!stop) {
+          setData(j);
+          setErr(null);
+        }
+      } catch (e: any) {
+        if (!stop) setErr(e?.message || 'fetch failed');
+      } finally {
+        if (!stop) t = setTimeout(tick, intervalMs);
+      }
+    }
+
+    tick();
+    return () => {
+      stop = true;
+      clearTimeout(t);
+    };
+  }, [path, intervalMs]);
+
+  return { data, err };
+}
+
+export default function Field01Page() {
+  // IMPORTANT: hit the API route, not the page route
+  const { data, err } = useLatest('/api/telemetry/field01', 1000);
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-semibold">Field01</h1>
-
-      <section>
-        <h2 className="text-lg font-medium mb-2">Sensors</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {status.length === 0 ? (
-            <div className="text-sm text-neutral-500 italic">No sensors registered yet.</div>
-          ) : status.map((s: any) => (
-            <div key={s.sensorId} className="rounded-2xl p-4 border shadow-sm">
-              <div className="text-sm text-neutral-500">{s.sensorId}</div>
-              <div className="text-lg">{s.displayName ?? s.type}</div>
-              <div className={`text-xs mt-1 ${s.online?'text-green-600':'text-neutral-400'}`}>
-                {s.online ? 'online' : 'offline'}
-              </div>
-              <div className="text-sm mt-2">
-                {(() => {
-                  const r = readings.find((r: any) => r.sensorId === s.sensorId);
-                  return r
-                    ? <span>{r.value} {r.unit} @ {new Date(r.ts).toLocaleTimeString()}</span>
-                    : <span className="text-neutral-400">No reading yet</span>;
-                })()}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-lg font-medium mb-2">Interpretations</h2>
-        {interps.length === 0 ? (
-          <div className="text-sm text-neutral-500 italic">None yet.</div>
-        ) : (
-          <div className="space-y-3">
-            {interps.map((i: any) => (
-              <div key={i.id} className="rounded-2xl p-4 border shadow-sm">
-                <div className="text-sm text-neutral-500">{i.sensorId}</div>
-                <div className="font-medium">{i.title}</div>
-                <div className="text-sm">{i.message}</div>
-                <div className="text-xs text-neutral-400 mt-1">
-                  {new Date(i.ts).toLocaleTimeString()}
-                </div>
-              </div>
-            ))}
+    <main style={{ fontFamily: 'system-ui', padding: 16, maxWidth: 900, margin: '0 auto' }}>
+      <h1>FieldB1 — Live Telemetry</h1>
+      {err && <div style={{ color: 'crimson' }}>fetch error: {err}</div>}
+      {!data ? (
+        <div style={{ color: '#666' }}>No data yet…</div>
+      ) : (
+        <>
+          <div style={{ marginBottom: 8 }}>
+            <strong>field:</strong> <code>{data.field ?? 'Field01'}</code>{' '}
+            <span style={{ opacity: 0.6 }}>|</span>{' '}
+            <strong>ts:</strong> <code>{data.timestamp_iso}</code>
           </div>
-        )}
-      </section>
-    </div>
+          <h3>Sensors</h3>
+          <pre style={{ background: '#111', color: '#0f0', padding: 12, borderRadius: 6 }}>
+            {JSON.stringify(data.sensors ?? {}, null, 2)}
+          </pre>
+          <h3>Full payload</h3>
+          <pre style={{ background: '#111', color: '#9ef', padding: 12, borderRadius: 6 }}>
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        </>
+      )}
+    </main>
   );
 }
+
+// DO NOT export getStaticProps / getServerSideProps from this page.

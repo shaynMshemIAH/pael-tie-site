@@ -1,183 +1,163 @@
 # coe_ingest_api.py
-# Gateway/forwarder:  Pi  -> (this Mac) -> pael-tie-site
-
 from __future__ import annotations
 
 import os
-import time
-import socket
-from typing import Any, Dict, Tuple
+from typing import Dict, Any, Optional
 
-from fastapi import FastAPI, Request, HTTPException, Header
-from fastapi.responses import JSONResponse, PlainTextResponse
-from fastapi.routing import APIRoute
-import httpx
+import requests
+from fastapi import FastAPI, Header, HTTPException, Request
 
-APP_NAME = "COE Ingest API"
-app = FastAPI(title=APP_NAME)
+# -----------------------------
+# Configuration (env)
+# -----------------------------
+def _pick(*keys: str) -> str:
+    for k in keys:
+        v = os.getenv(k, "")
+        if v and v.strip():
+            return v.strip()
+    return ""
 
-# -----------------------------------------------------------------------------
-# Environment (no secrets hard-coded — set these in your shell)
-# -----------------------------------------------------------------------------
-# Token the Pis must present to THIS gateway (Mac).
-GATEWAY_TOKEN = os.getenv("GATEWAY_TOKEN", "6f826aa051dbb40aaec194e88be08a9ff9a7622bbf6672d6872ea8677b2f065a").strip()
+# Mac (gateway) auth (what Pis must send)
+GATEWAY_TOKEN = _pick("GATEWAY_TOKEN", "FIELD_GATE_TOKEN")
 
-# Where the gateway forwards data (your site) and the token to use there.
-SITE_INGEST_URL   = os.getenv("SITE_INGEST_URL", "https://pael-tie-site.vercel.app/api/telemetry/ingest").strip()
-SITE_INGEST_TOKEN = (
-    os.getenv("SITE_INGEST_TOKEN", "a0d56eb64764a78ee59883fd1416e24fda928b2a1117f6512a0a1ce4b163e878") or
-    os.getenv("PAEL_TIE_SITE_INGEST_TOKEN", "a0d56eb64764a78ee59883fd1416e24fda928b2a1117f6512a0a1ce4b163e878")
-).strip()
+# Site forward target (what this gateway uses to reach the site)
+SITE_INGEST_URL   = _pick("SITE_INGEST_URL")
+SITE_INGEST_TOKEN = _pick("SITE_INGEST_TOKEN", "PAEL_TIE_SITE_INGEST_TOKEN")
 
-# HTTP timeout (seconds) for forwarding to the site
-SITE_TIMEOUT_S = float(os.getenv("SITE_TIMEOUT", "8.0"))
+SITE_TIMEOUT_S = 8.0  # seconds
 
-HOSTNAME = socket.gethostname()
-
-
-# -----------------------------------------------------------------------------
+# -----------------------------
 # Helpers
-# -----------------------------------------------------------------------------
-def _now_ts() -> int:
-    return int(time.time())
-
-
+# -----------------------------
 def _auth_ok(authorization: str, x_field_gate_token: str) -> bool:
     """
     Accept either:
-      Authorization: Bearer <GATEWAY_TOKEN>
-      -OR-
-      x-field-gate-token: <GATEWAY_TOKEN>
-    If GATEWAY_TOKEN is empty, auth is effectively disabled.
+      - Authorization: Bearer <token>
+      - x-field-gate-token: <token>
     """
     if not GATEWAY_TOKEN:
+        # If not configured, reject anything. (safer than allowing open posts)
+        return False
+
+    # Bearer path
+    if authorization:
+        parts = authorization.split(None, 1)
+        if len(parts) == 2 and parts[0].lower() == "bearer" and parts[1].strip() == GATEWAY_TOKEN:
+            return True
+
+    # Legacy / header token path
+    if x_field_gate_token and x_field_gate_token.strip() == GATEWAY_TOKEN:
         return True
-    if authorization == f"Bearer {GATEWAY_TOKEN}":
-        return True
-    if x_field_gate_token == GATEWAY_TOKEN:
-        return True
+
     return False
 
 
 def _normalize_payload(raw: Any) -> Dict[str, Any]:
     """
     Accept either:
-      {"payload": {...}} -> {...}
-      {...}              -> {...}
+      - raw dict  -> returns raw
+      - {"payload": {...}} -> returns payload
     """
-    if isinstance(raw, dict) and "payload" in raw and isinstance(raw["payload"], dict):
+    if not isinstance(raw, dict):
+        raise HTTPException(status_code=400, detail="Request body must be an object")
+
+    if "payload" in raw and isinstance(raw["payload"], dict):
         return raw["payload"]
-    if isinstance(raw, dict):
-        return raw
-    return {"value": raw}
+
+    return raw
 
 
-async def _forward_to_site(stream: str, payload: Dict[str, Any]) -> Tuple[int, str]:
-    """
-    Forward the normalized payload to your site ingest.
-    Adds minimal envelope that your site expects.
-    Returns (status_code, response_text)
-    """
+def _require_site_config():
     if not SITE_INGEST_URL or not SITE_INGEST_TOKEN:
-        raise HTTPException(status_code=500, detail="SITE_INGEST_URL or SITE_INGEST_TOKEN not set")
+        raise HTTPException(
+            status_code=500,
+            detail="Server misconfigured (SITE_INGEST_URL or SITE_INGEST_TOKEN missing)"
+        )
 
-    # Compatibility: some backends accept Authorization, some X-INGEST-TOKEN.
+
+def _forward_to_site(stream: str, payload: Dict[str, Any]) -> requests.Response:
+    """
+    Forward to central site with Authorization and JSON body:
+      { "type": "<stream>", "payload": { ... } }
+    """
+    _require_site_config()
     headers = {
         "Authorization": f"Bearer {SITE_INGEST_TOKEN}",
-        "X-INGEST-TOKEN": SITE_INGEST_TOKEN,
         "Content-Type": "application/json",
     }
+    body = {"type": stream, "payload": payload}
+    return requests.post(SITE_INGEST_URL, headers=headers, json=body, timeout=SITE_TIMEOUT_S)
 
-    body = {
-        "type": stream,
-        "gateway": HOSTNAME,
-        "recv_ts": _now_ts(),
-        "payload": payload,
+
+# -----------------------------
+# FastAPI app
+# -----------------------------
+app = FastAPI(title="COE Ingest API (gateway)")
+
+@app.get("/api/ping")
+def ping():
+    return {
+        "ok": True,
+        "ingest_url": SITE_INGEST_URL or "",
+        "needs": {
+            "gateway_token": bool(GATEWAY_TOKEN),
+            "site_ingest_token": bool(SITE_INGEST_TOKEN),
+        },
     }
 
-    async with httpx.AsyncClient(timeout=SITE_TIMEOUT_S) as client:
-        try:
-            resp = await client.post(SITE_INGEST_URL, headers=headers, json=body)
-            return resp.status_code, resp.text
-        except httpx.RequestError as e:
-            # Network/timeout error -> surface clearly
-            return 599, f"forward error: {e!s}"
-
-
-def _route_specs() -> list[dict]:
-    specs = []
-    for r in app.routes:
-        if isinstance(r, APIRoute):
-            specs.append({"path": r.path, "methods": list(r.methods)})
-    specs.sort(key=lambda x: x["path"])
-    return specs
-
-
-# -----------------------------------------------------------------------------
-# Diagnostics
-# -----------------------------------------------------------------------------
-@app.get("/api/ping", response_class=PlainTextResponse)
-async def ping() -> str:
-    return "pong"
-
-
-@app.get("/routes")
-async def routes():
-    return {"routes": _route_specs()}
-
-
-# -----------------------------------------------------------------------------
-# Ingest endpoints
-# -----------------------------------------------------------------------------
-@app.post("/ingest")
-async def ingest_default(
-    request: Request,
-    authorization: str = Header(default=""),
-    x_field_gate_token: str = Header(default=""),
-):
-    if not _auth_ok(authorization, x_field_gate_token):
-        raise HTTPException(status_code=401, detail="bad key")
-
-    raw = await request.json()
-    payload = _normalize_payload(raw)
-
-    # If the payload declares its own stream, use it; else call it "default"
-    stream = payload.get("field_id") or payload.get("stream") or "default"
-
-    status, text = await _forward_to_site(stream, payload)
-
-    return JSONResponse(
-        {
-            "ok": 200 <= status < 300,
-            "stream": stream,
-            "forward_status": status,
-            "forward_body": text[:512],  # clip for safety
-        },
-        status_code=200 if 200 <= status < 300 else 502,
-    )
-
-
+# Preferred: stream-aware route
 @app.post("/ingest/{stream}")
 async def ingest_stream(
     stream: str,
     request: Request,
     authorization: str = Header(default=""),
-    x_field_gate_token: str = Header(default=""),
+    x_field_gate_token: str = Header(default="")
 ):
+    # 1) Auth
     if not _auth_ok(authorization, x_field_gate_token):
-        raise HTTPException(status_code=401, detail="bad key")
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
-    raw = await request.json()
-    payload = _normalize_payload(raw)
+    # 2) Parse JSON
+    try:
+        body = await request.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Request body must be valid JSON")
 
-    status, text = await _forward_to_site(stream, payload)
+    # 3) Normalize
+    try:
+        payload = _normalize_payload(body)
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code=400, detail="Malformed payload")
 
-    return JSONResponse(
-        {
-            "ok": 200 <= status < 300,
-            "stream": stream,
-            "forward_status": status,
-            "forward_body": text[:512],
-        },
-        status_code=200 if 200 <= status < 300 else 502,
-    )
+    # 4) Minimal required keys (stream consumers assume these)
+    if "timestamp" not in payload or "field_id" not in payload:
+        raise HTTPException(status_code=422, detail="Missing required fields 'timestamp' or 'field_id'")
+
+    # 5) Forward to site
+    try:
+        resp = _forward_to_site(stream, payload)
+    except requests.RequestException as e:
+        # network/timeout/etc
+        raise HTTPException(status_code=502, detail=f"Failed to forward payload: {e}")
+
+    # 6) Surface site error cleanly
+    if resp.status_code >= 400:
+        try:
+            msg = resp.json()
+        except Exception:
+            msg = {"text": resp.text}
+        raise HTTPException(status_code=resp.status_code, detail=msg)
+
+    # 7) Success
+    return {"ok": True}
+
+# Back-compat: /ingest (no stream) -> default to "field01"
+@app.post("/ingest")
+async def ingest_default(
+    request: Request,
+    authorization: str = Header(default=""),
+    x_field_gate_token: str = Header(default="")
+):
+    return await ingest_stream("field01", request, authorization, x_field_gate_token)

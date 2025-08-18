@@ -1,27 +1,56 @@
 // pages/api/telemetry/ingest.ts
 import type { NextApiRequest, NextApiResponse } from "next";
+import crypto from "crypto";
 
-const AUTH = process.env.PAEL_TIE_SITE_INGEST_TOKEN || "";
+function pick(...keys: string[]) {
+  for (const k of keys) {
+    const v = process.env[k];
+    if (v && v.trim() !== "") return v.trim();
+  }
+  return "";
+}
+function safeEq(a: string, b: string) {
+  const A = Buffer.from(a);
+  const B = Buffer.from(b);
+  if (A.length !== B.length) return false;
+  return crypto.timingSafeEqual(A, B);
+}
 
-// Simple in-memory cache (works like your A1/B1 dev pattern)
-const latest: Record<string, any> = (global as any).__LATEST__ || {};
-(global as any).__LATEST__ = latest;
+const AUTH = pick("PAEL_TIE_SITE_INGEST_TOKEN", "SITE_INGEST_TOKEN");
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).json({ ok: false, error: "Method not allowed" });
-
-  const auth = req.headers.authorization || "";
-  if (!AUTH || auth !== `Bearer ${AUTH}`) return res.status(401).json({ ok: false, error: "Bad token" });
-
-  try {
-    const { type, payload } = req.body || {};
-    if (!type || !payload) return res.status(400).json({ ok: false, error: "Missing type/payload" });
-
-    // Save latest by type (A1/B1/fieldmi1 etc.)
-    latest[type] = { ts: Date.now(), payload };
-
-    return res.status(200).json({ ok: true, stored: type });
-  } catch (e: any) {
-    return res.status(500).json({ ok: false, error: e?.message || "ingest failed" });
+  if (req.method !== "POST") {
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
+
+  // --- auth ---
+  const auth = (req.headers.authorization || "").trim(); // "Bearer <token>"
+  if (!AUTH || !auth.toLowerCase().startsWith("bearer ")) {
+    return res.status(401).json({ ok: false, error: "Bad token" });
+  }
+  const presented = auth.slice(7).trim();
+  if (!safeEq(presented, AUTH)) {
+    return res.status(401).json({ ok: false, error: "Bad token" });
+  }
+
+  // --- body normalisation ---
+  const raw = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
+  const type =
+    raw.type ??
+    raw.stream ??
+    raw.field_id ??
+    "unknown";
+
+  const payload = raw.payload ?? raw;
+
+  if (!payload || typeof payload !== "object") {
+    return res.status(400).json({ ok: false, error: "Missing/invalid payload" });
+  }
+
+  // simple in-memory cache (dev pattern)
+  const g = global as any;
+  g.__LATEST__ = g.__LATEST__ || {};
+  g.__LATEST__[type] = { ts: Date.now(), payload };
+
+  return res.status(200).json({ ok: true, stored: type });
 }
