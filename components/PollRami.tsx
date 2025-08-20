@@ -1,33 +1,46 @@
-import React, { useState } from 'react';
+// components/RamiResponse.tsx
+import React, { useEffect, useState } from 'react';
 
-export default function PollRami({ sessionId, imageId }: { sessionId: string; imageId: string }) {
-  const [submitted, setSubmitted] = useState(false);
-  const [desc, setDesc] = useState('');
+export default function RamiResponse() {
+  const [data, setData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async () => {
-    await fetch('/api/pollRami', {
-      method: 'POST',
-      body: JSON.stringify({ sessionId, imageId, description: desc, timestamp: Date.now() }),
-      headers: { 'Content-Type': 'application/json' }
-    });
-    setSubmitted(true);
-  };
+  useEffect(() => {
+    const fetchTelemetry = async () => {
+      try {
+        const res = await fetch('/api/telemetry/fieldmi1');
+        const json = await res.json();
+        if (json.ok) {
+          setData(json.data);
+        } else {
+          setError(json.error || 'No data yet');
+        }
+      } catch (err) {
+        setError('Fetch failed');
+      }
+    };
 
-  if (submitted) return <p>✅ Your perception has been logged. Thank you.</p>;
+    fetchTelemetry();
+    const interval = setInterval(fetchTelemetry, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div style={{ marginTop: '2rem', backgroundColor: '#2a2a3d', padding: '1rem', borderRadius: '8px' }}>
-      <h3>👁️ What did you perceive?</h3>
-      <textarea
-        value={desc}
-        onChange={e => setDesc(e.target.value)}
-        rows={4}
-        placeholder="Describe what you saw in the image — dome ridge? flurries? nothing?"
-        style={{ width: '100%', padding: '0.5rem' }}
-      />
-      <button onClick={handleSubmit} style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}>
-        Submit Response
-      </button>
+    <div style={{ marginTop: '2rem', backgroundColor: '#121212', padding: '1rem', borderRadius: '8px', color: '#eee' }}>
+      <h3>📡 FieldMI1 Live Telemetry</h3>
+      {error && <p style={{ color: 'red' }}>⚠️ {error}</p>}
+      {data ? (
+        <div style={{ lineHeight: 1.6 }}>
+          <strong>Timestamp:</strong> {new Date(data.timestamp).toLocaleString()} <br />
+          <strong>Hydrogen (mV):</strong> {data.sensors?.analog_v} <br />
+          <strong>Lux:</strong> {data.sensors?.lux} <br />
+          <strong>Laser Triggered:</strong> {data.sensors?.laser_triggered ? 'Yes' : 'No'} <br />
+          <strong>Magnetometer:</strong> {data.sensors?.mag_x}, {data.sensors?.mag_y}, {data.sensors?.mag_z} <br />
+          <strong>Bearing:</strong> {data.sensors?.bearing_deg}°
+        </div>
+      ) : (
+        !error && <p>🔄 Loading...</p>
+      )}
     </div>
   );
 }

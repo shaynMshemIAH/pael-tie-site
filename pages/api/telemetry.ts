@@ -29,8 +29,8 @@ export const config = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ProxyOut>) {
-  const base = process.env.COE_API_BASE;
-  const key = process.env.COE_API_KEY;
+  const base = process.env.TELEMETRY_READ_API_BASE;
+  const key = process.env.TELEMETRY_READ_API_KEY;
 
   if (!base || !key) {
     return res.status(500).json({

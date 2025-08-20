@@ -1,18 +1,33 @@
+// pages/api/telemetry/field01.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).json({ ok: false, error: "method" });
+  try {
+    const response = await fetch("http://192.168.1.214:8124/live/Field01.json");
+    const raw = await response.json();
 
-  const bearer = (req.headers.authorization || "").startsWith("Bearer ")
-    ? (req.headers.authorization as string).slice(7)
-    : "";
-  const token = (req.headers["x-ingest-token"] as string) || bearer;
+    const sample = raw.data || raw; // Support both formats
 
-  if (token !== process.env.FIELD01_INGEST_TOKEN) {
-    return res.status(401).json({ ok: false, error: "unauthorized" });
+    const formatted = {
+      hasData: true,
+      data: {
+        timestamp: sample.timestamp ?? new Date().toISOString(),
+        sensors: {
+          lux: sample.sensors?.lux ?? "N/A",
+          temp_amb_c: sample.sensors?.temp_amb_c ?? "N/A",
+          temp_obj_c: sample.sensors?.temp_obj_c ?? "N/A",
+          delta_t_c: sample.sensors?.delta_t_c ?? "N/A",
+          mag_x: sample.sensors?.mag_x ?? "N/A",
+          mag_y: sample.sensors?.mag_y ?? "N/A",
+          mag_z: sample.sensors?.mag_z ?? "N/A",
+          bearing_deg: sample.sensors?.bearing_deg ?? "N/A",
+        },
+      },
+    };
+
+    res.status(200).json(formatted);
+  } catch (error) {
+    console.error("Failed to fetch Field01 telemetry:", error);
+    res.status(500).json({ error: "Unable to fetch telemetry data" });
   }
-
-  // Do your normal persist/stream/broadcast here. For now, echo.
-  const body = req.body;
-  return res.status(200).json({ ok: true, received: body?.timestamp ?? null });
 }

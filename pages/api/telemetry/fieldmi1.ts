@@ -1,16 +1,19 @@
 // pages/api/telemetry/fieldmi1.ts
-import type { NextApiRequest, NextApiResponse } from "next";
-
-// Tap the same global cache used by ingest
-const latest: Record<string, any> = (global as any).__LATEST__ || {};
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const entry = latest["fieldmi1"];
-  if (!entry) return res.status(200).json({ ok: true, hasData: false, msg: "No FieldMI data yet" });
-
-  return res.status(200).json({
-    ok: true,
-    ts: entry.ts,
-    data: entry.payload,
+  res.status(200).json({
+    hasData: true,
+    data: {
+      timestamp: new Date().toISOString(),
+      sensors: {
+        analog_v: 420,
+        lux: 95,
+        laser_triggered: true,
+        mag_x: 0.1,
+        mag_y: 0.2,
+        mag_z: 0.3,
+      },
+    },
   });
 }

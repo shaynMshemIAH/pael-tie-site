@@ -1,0 +1,10 @@
+export default function handler(req, res) {
+  res.status(200).json([
+    {
+      Field: "FieldMI",
+      Zo: "Zo1",
+      suggestion: "Keep monitoring magnetics",
+      timestamp: new Date().toISOString()
+    }
+  ]);
+}
