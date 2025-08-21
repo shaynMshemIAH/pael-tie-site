@@ -1,3 +1,8 @@
+# [DEPRECATED] This file is no longer used in production.
+# Retained for historical reference and local testing fallback.
+# Production ingest now handled by /api/telemetry/ingest on Vercel.# [DEPRECATED] This file is no longer used in production.
+# Retained for historical reference and local testing fallback.
+# Production ingest now handled by /api/telemetry/ingest on Vercel.
 # coe_ingest_api.py
 
 from __future__ import annotations
@@ -16,10 +21,12 @@ from redis import asyncio as aioredis
 # ------------------------
 # Configuration
 # ------------------------
-FIELD_GATE_TOKEN  = os.getenv("FIELD_GATE_TOKEN", "gfdlgudfg3458SDGd9uodRdfgujdkld45908DGjgDTOGUdgjodij3452930SDFcJ") 
-SITE_INGEST_URL   = os.getenv("SITE_INGEST_URL", "https://pael-tie-site.vercel.app/api/telemetry/ingest")
-PAEL_TIE_SITE_INGEST_TOKEN = os.getenv("PAEL_TIE_SITE_INGEST_TOKEN", "a0d56eb64764a78ee59883fd1416e24fda928b2a1117f6512a0a1ce4b163e878")
-SITE_INGEST_TOKEN = os.getenv("SITE_INGEST_URL", "a0d56eb64764a78ee59883fd1416e24fda928b2a1117f6512a0a1ce4b163e878")
+FIELD_GATE_TOKEN  = os.getenv("FIELD_GATE_TOKEN", "") 
+SITE_INGEST_URL   = os.getenv("SITE_INGEST_URL", "")
+PAEL_TIE_SITE_INGEST_TOKEN = os.getenv("PAEL_TIE_SITE_INGEST_TOKEN")
+if not PAEL_TIE_SITE_INGEST_TOKEN:
+    raise RuntimeError("Missing PAEL_TIE_SITE_INGEST_TOKEN in environment")
+SITE_INGEST_TOKEN = os.getenv("SITE_INGEST_URL", "")
 SITE_TIMEOUT_S    = float(os.getenv("SITE_TIMEOUT_S", "8.0"))
 
 # ------------------------

@@ -1,17 +1,14 @@
-// pages/api/telemetry/fieldmi1/latest.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import fs from 'fs';
-import path from 'path';
+import { redis } from "../../../../lib/redis"; // Make sure this path is correct
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const liveDir = path.join(process.cwd(), 'data', 'live');  // Or wherever FastAPI saved it
-  const filePath = path.join(liveDir, 'fieldmi1.json');
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.setHeader('Content-Type', 'application/json');
+  
+  const data = await redis.get("fieldmi1_latest");
 
-  try {
-    const raw = fs.readFileSync(filePath, 'utf-8');
-    const data = JSON.parse(raw);
-    res.status(200).json({ hasData: true, data });
-  } catch (err) {
-    res.status(404).json({ hasData: false, msg: 'Data not found' });
+  if (data) {
+    return res.status(200).json({ hasData: true, data: JSON.parse(data) });
+  } else {
+    return res.status(404).json({ hasData: false, msg: "No data found for fieldmi1 or fieldmi1:latest" });
   }
 }

@@ -87,4 +87,3 @@ export default function FieldB1Page() {
   );
 }
 
-// DO NOT export getStaticProps / getServerSideProps from this page.

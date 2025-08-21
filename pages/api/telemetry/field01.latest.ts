@@ -1,6 +1,6 @@
-// pages/api/telemetry/fieldb1.ts
+// pages/api/telemetry/field01.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { redis, getfield1 } from '../../../lib/redis';
+import { redis } from '../../../lib/redis';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -19,11 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { field_id } = req.query;
     
     try {
-      const key = 'telemetry:fieldb1';
-      const redis = new Redis({
-        url: process.env.UPSTASH_REDIS_REST_URL!,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-      });
       const data = await redis.get(field_id as string);
       if (data) {
         try {

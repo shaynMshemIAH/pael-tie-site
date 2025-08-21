@@ -1,14 +1,37 @@
+// pages/api/telemetry/fieldmi1.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { redis } from "../../../lib/redis";
+import { redis } from '../../../lib/redis';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.setHeader('Content-Type', 'application/json');
+  if (req.method === 'POST') {
+    const body = req.body;
+    const fieldId = body.field_id;
 
-  const data = await redis.get("fieldmi1_latest");
+    try {
+      await redis.set(fieldId, JSON.stringify(body));
+      return res.status(200).json({ msg: "Saved to Redis", field_id: fieldId });
+    } catch (err) {
+      return res.status(500).json({ msg: "Redis save failed", error: err });
+    }
+  }
 
-  if (data) {
-    return res.status(200).json({ hasData: true, data: JSON.parse(data) });
-  } else {
-    return res.status(404).json({ hasData: false, msg: "No data found for fieldmi1 or fieldmi1:latest" });
+  if (req.method === 'GET') {
+    const { field_id } = req.query;
+
+    try {
+      const data = await redis.get(field_id as string);
+      if (data) {
+        try {
+          const parsed = JSON.parse(data);
+          return res.status(200).json({ hasData: true, data: parsed });
+        } catch (parseError) {
+          return res.status(500).json({ msg: "JSON parsing failed", raw: data });
+        }
+      } else {
+        return res.status(404).json({ hasData: false, msg: "No data found" });
+      }
+    } catch (err) {
+      return res.status(500).json({ msg: "Redis read failed", error: err });
+    }
   }
 }
