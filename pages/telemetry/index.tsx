@@ -127,15 +127,19 @@ function FieldCard({ title, apiPath }: { title: string; apiPath: string }) {
 }
 
 export default function TelemetryDashboard() {
-  return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="max-w-5xl mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">Live Telemetry</h1>
-        <div className="grid md:grid-cols-2 gap-6">
-          <FieldCard title="FieldA1" apiPath="/api/telemetry/fielda1" />
-          <FieldCard title="FieldB1" apiPath="/api/telemetry/fieldb1" />
-        </div>
+
+return (
+  <main className="min-h-screen bg-gray-50">
+    <div className="max-w-5xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Live Telemetry</h1>
+      <div className="grid md:grid-cols-2 gap-6">
+        <FieldCard title="FieldA1" apiPath="/api/telemetry/fielda1" />
+        <FieldCard title="Field01" apiPath="/api/telemetry/field01" />
+        <FieldCard title="FieldB1" apiPath="/api/telemetry/fieldb1" />
+        <FieldCard title="FieldMI1" apiPath="/api/telemetry/fieldmi1" />
       </div>
-    </main>
-  );
+    </div>
+  </main>
+);
 }
+

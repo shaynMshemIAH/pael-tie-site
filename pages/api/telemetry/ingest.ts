@@ -2,54 +2,61 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
 
-// --- Timing-safe comparison ---
-function safeEq(a: string, b: string): boolean {
-  const A = Buffer.from(a);
-  const B = Buffer.from(b);
-  if (A.length !== B.length) return false;
-  return crypto.timingSafeEqual(A, B);
+// --- Strict ENV token ---
+const FIELD_GATE_TOKEN = process.env.FIELD_GATE_TOKEN?.trim() || "";
+
+// --- Timing-safe token match ---
+function isTokenValid(token: string): boolean {
+  const expected = Buffer.from(FIELD_GATE_TOKEN);
+  const received = Buffer.from(token);
+  return (
+    expected.length === received.length &&
+    crypto.timingSafeEqual(expected, received)
+  );
 }
 
-// --- Env Secret ---
-const AUTH = process.env.SITE_TOKEN_SECRET?.trim() ?? "";
-
-// --- Handler ---
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  // --- Method check ---
+  // Method check
   if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Method not allowed" });
+    return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
-  // --- Authorization header ---
-  const auth = (req.headers.authorization || "").trim();
-  if (!AUTH || !auth.toLowerCase().startsWith("bearer ")) {
-    return res.status(401).json({ ok: false, error: "Bad token" });
+  // Auth check
+  const authHeader = req.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ")
+    ? authHeader.slice(7).trim()
+    : "";
+
+  if (!FIELD_GATE_TOKEN || !isTokenValid(token)) {
+    return res.status(401).json({ ok: false, error: "Unauthorized" });
   }
 
-  // --- Auth token check ---
-  const presented = auth.slice(7).trim();
-  if (!safeEq(presented, AUTH)) {
-    return res.status(401).json({ ok: false, error: "Bad token" });
+  try {
+    // Parse incoming JSON
+    const rawBody = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+    const payload = rawBody.payload ?? rawBody;
+    const fieldType =
+      (rawBody.type ||
+        rawBody.stream ||
+        payload.field_id ||
+        "unknown")?.toLowerCase();
+
+    if (!payload || typeof payload !== "object") {
+      return res.status(400).json({ ok: false, error: "Invalid payload" });
+    }
+
+    // Store in in-memory global (for debugging only)
+    (globalThis as any)._LATEST_ ||= {};
+    (globalThis as any)._LATEST_[fieldType] = {
+      ts: Date.now(),
+      ...payload,
+    };
+
+    return res.status(200).json({ ok: true, stored: fieldType });
+  } catch (err: any) {
+    return res.status(400).json({
+      ok: false,
+      error: err?.message || "Malformed request body",
+    });
   }
-
-  // --- Body parsing ---
-  const raw = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-  const payload = raw.payload ?? raw;
-
-  if (!payload || typeof payload !== "object") {
-    return res.status(400).json({ ok: false, error: "Missing/invalid payload" });
-  }
-
-  // --- Extract type for telemetry indexing ---
-  // Can use .type, .stream, or fallback to .field_id
-  const type = (raw.type ?? raw.stream ?? payload.field_id ?? "unknown").toLowerCase();
-
-  // --- Normalize key and store globally ---
-  (globalThis as any)._LATEST_ ||= {};
-  (globalThis as any)._LATEST_[type] = {
-    ts: Date.now(),
-    ...payload
-  };
-
-  return res.status(200).json({ ok: true, stored: type });
 }

@@ -9,8 +9,9 @@ load_dotenv()
 import os
 print(f"🧪 .env loaded FIELD_GATE_TOKEN: {os.getenv('FIELD_GATE_TOKEN')}")
 app= FastAPI()
-
-LIVE_DIR = os.path.join(os.path.expanduser("~"), "FieldA1")
+import redis.asyncio as redis
+import json
+from redis import asyncio as aioredis
 
 # ------------------------
 # Configuration
@@ -44,7 +45,12 @@ def _normalize_payload(raw: Any) -> Dict[str, Any]:
 
     if "payload" in raw and isinstance(raw["payload"], dict):
         return raw["payload"]
-    
+   
+    if "field_id" not in raw and "fieldName" in raw:
+        raw["field_id"] = raw["fieldName"]
+    if "timestamp" not in raw and "lastUpdated" in raw:
+        raw["timestamp"] = raw["lastUpdated"]
+
     return raw
 
 def _require_site_config():
@@ -67,6 +73,8 @@ def _forward_to_site(stream: str, payload: Dict[str, Any]) -> requests.Response:
         json=body,
         timeout=SITE_TIMEOUT_S
     )
+def get_live_dir(field_id: str):
+    return f"/home/{field_id}/{field_id}"
 
 # ------------------------
 # FastAPI App
@@ -123,36 +131,17 @@ async def ingest_stream(
 
     return {"ok": True}
 
-@app.post("/ingest")
-async def ingest_data(
-    request: Request, 
-    x_field_gate_token: str = Header(...),
-
-):
-    print(f"🔐 Incoming token: {x_field_gate_token.strip()}")
-    body = await request.json()
-    return {"ok": True} 
-
-@app.post("/ingest")
-async def ingest_data(
-    request: Request,
-    x_field_gate_token: str = Header(...),
-):
-    body = await request.json()
-    field_id = body.get("field_id", "unknown")
-
-    print(f"🔐 Token: {x_field_gate_token.strip()}")
-    print(f"📡 Field ID: {field_id}")
-
-    return await ingest_stream(field_id, request, "", x_field_gate_token)
-
 @app.get("/live/{field_id}")
 def serve_latest(field_id: str):
-    live_file_path = f"/home/{field_id}/live/{field_id}.json"
+    live_dir = get_live_dir(field_id)
+    live_file_path = os.path.join(live_dir, "live", f"{field_id}.json")    
+    
     if not os.path.exists(live_file_path):
         raise HTTPException(status_code=404, detail=f"No live data found for {field_id}")
+
     with open(live_file_path) as f:
         return json.load(f)
+
 
 @app.get("/telemetry/recent")
 def read_recent(request: Request):
@@ -161,6 +150,78 @@ def read_recent(request: Request):
         raise HTTPException(status_code=401, detail="Unauthorized")
     return {"msg": "Success"}
 
+@app.post("/telemetry/ingest")
+async def ingest_data(
+    request: Request,
+    x_field_gate_token: str = Header(...)
+):
+    body = await request.json()
+    field_id = body.get("field_id", "unknown")
+
+    print(f"📡 Field ID: {field_id}")
+    print(f"🔐 Token: {x_field_gate_token.strip()}")
+
+    if "timestamp" not in body or field_id == "unknown":
+        raise HTTPException(status_code=422, detail="Missing 'timestamp' or 'field_id'")
+
+    # Forward to site with field_id in route
+    try:
+        resp = requests.post(
+            f"https://pael-tie-site.vercel.app/api/telemetry/{field_id}",
+            json=body
+        )
+    except requests.RequestException as e:
+        raise HTTPException(status_code=502, detail=f"Forwarding error: {e}")
+
+    if resp.status_code >= 400:
+        raise HTTPException(status_code=resp.status_code, detail=resp.json())
+
+    # Save locally as well
+    live_dir = get_live_dir(field_id)
+    live_file_path = os.path.join(live_dir, "live", f"{field_id}.json")
+    with open(live_file_path, "w") as f:
+        json.dump(body, f)
+
+    return {"msg": "Ingested and forwarded"}
+
 @app.route('/live/<filename>')
 def serve_live_json(filename):
-    return send_from_directory(LIVE_DIR, filename)
+    # Assume filename = field_id.json
+    field_id = filename.replace(".json", "")
+    live_dir = get_live_dir(field_id)
+    return send_from_directory(os.path.join(live_dir, "live"), filename)
+
+from fastapi import Request
+import os, json, requests
+from redis import asyncio as aioredis
+
+UPSTASH_URL = os.getenv("FIELDMI1_KV_KV_REST_API_URL")
+UPSTASH_TOKEN = os.getenv("FIELDMI1_KV_KV_REST_API_TOKEN")
+REDIS_URL = os.getenv("FIELDMI1_KV_REDIS_URL")
+
+@app.post("/fieldmi1")
+async def ingest_fieldmi1(req: Request):
+    payload = await req.json()
+    redis_key = f"{payload['field_id']}:latest"
+
+    # Send to Upstash via REST API
+    redis_body = {
+        "operation": "SET",
+        "key": redis_key,
+        "value": json.dumps(payload)
+    }
+    headers = {
+        "Authorization": f"Bearer {UPSTASH_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(UPSTASH_URL, json=redis_body, headers=headers)
+
+    # ALSO: Write directly using Redis SDK (optional fallback)
+    try:
+        redis = aioredis.from_url(REDIS_URL)
+        await redis.set(redis_key, json.dumps(payload))
+    except Exception as e:
+        print("Local Redis set failed:", e)
+
+    return {"status": "forwarded", "success": response.ok}

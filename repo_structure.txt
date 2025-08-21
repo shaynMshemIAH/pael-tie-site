@@ -1,0 +1,101 @@
+.
+├── __pycache__
+│   └── coe_ingest_api.cpython-313.pyc
+├── _app_disabled
+│   └── api
+│       ├── a1
+│       └── telemetry
+├── _app_router_backups
+│   └── 2025-08-16
+│       └── app
+├── aerospace.tsx
+├── backup
+│   └── page-tsx-backup.tsx
+├── coe_ingest_api.py
+├── components
+│   ├── PollRami.tsx
+│   └── RamiResponse.tsx
+├── content
+│   └── logs
+│       └── A0
+├── cudaq_service.py
+├── eslint.config.mjs
+├── Grand_Stand.py
+├── index_backup.html
+├── lib
+│   ├── env.ts
+│   ├── redis.ts
+│   ├── safeAuth.ts
+│   └── telemetry
+│       ├── schema.ts
+│       ├── store.ts
+│       └── types.ts
+├── next-env.d.ts
+├── next.config.js
+├── package-lock.json
+├── package.json
+├── pages
+│   ├── aerospace.tsx
+│   ├── agi
+│   │   └── live.disabled.tsx
+│   ├── agi.tsx
+│   ├── api
+│   │   ├── A.ts.disabled
+│   │   ├── a1
+│   │   ├── b1
+│   │   ├── coe.ts
+│   │   ├── debug
+│   │   ├── ingest.ts
+│   │   ├── interpret.ts
+│   │   ├── interpreted_output.json
+│   │   ├── MI.ts.disabled
+│   │   ├── ping.ts
+│   │   ├── pollRami.ts
+│   │   ├── rami
+│   │   ├── rami.ts
+│   │   ├── telemetry
+│   │   └── telemetry.ts.disabled
+│   ├── careers.tsx
+│   ├── fieldmi1.tsx
+│   ├── good-for-you.tsx
+│   ├── index.tsx
+│   ├── index.tsx.bak
+│   ├── ingest
+│   ├── logs
+│   │   ├── A0
+│   │   └── index.tsx
+│   ├── pharma.tsx
+│   ├── rami.tsx
+│   └── telemetry
+│       ├── field01.tsx
+│       ├── fielda1.tsx
+│       ├── fieldb1.tsx
+│       ├── fieldmi1.tsx
+│       ├── index.tsx
+│       └── live.tsx
+├── postcss.config.mjs
+├── public
+│   ├── assets
+│   │   └── images
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── images
+│   │   ├── converted
+│   │   ├── IMG_2102.jpg
+│   │   ├── IMG_2103.jpg
+│   │   ├── IMG_2104.jpg
+│   │   ├── IMG_2105.jpg
+│   │   ├── IMG_2106.jpg
+│   │   ├── IMG_2108.jpg
+│   │   ├── IMG_2109.jpg
+│   │   ├── IMG_2110.jpg
+│   │   ├── IMG_2111.jpg
+│   │   └── nh3_dome_test_01.jpg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── README.md
+├── repo_structure.txt
+└── tsconfig.json
+
+33 directories, 66 files
