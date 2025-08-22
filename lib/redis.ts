@@ -1,32 +1,22 @@
 // lib/redis.ts
-import { Redis } from '@upstash/redis';
+import Redis from 'ioredis';
 
-export const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
+export const redis = new Redis(process.env.REDIS_URL!);
 
-export async function getFieldMI1() {
-  const raw = await redis.get('fieldmi1');
-
+async function getField(fieldKey: string) {
+  const raw = await redis.get(fieldKey.toLowerCase());
   try {
     return typeof raw === 'string' ? JSON.parse(raw) : raw;
   } catch (err) {
-    console.error('Error parsing Redis value for fieldmi1:', err);
+    console.error(`Error parsing Redis value for ${fieldKey}:`, err);
     return null;
   }
 }
 
-export async function getFieldB1() {
-  const raw = await redis.get('fieldb1');
-
-  try {
-    return typeof raw === 'string' ? JSON.parse(raw) : raw;
-  } catch (err) {
-    console.error('Error parsing Redis value for fieldb1:', err);
-    return null;
-  }
-}
+export const getFieldMI1 = () => getField('fieldmi1');
+export const getFieldB1 = () => getField('fieldb1');
+export const getFieldA1 = () => getField('fielda1');
+export const getField01 = () => getField('field01');
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -36,7 +26,7 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify({ error: 'Missing field key' }), { status: 400 });
   }
 
-  await redis.set(field, body);
+  await redis.set(field.toLowerCase(), JSON.stringify(body));
 
   return new Response(JSON.stringify({
     message: `${field} data endpoint`,
