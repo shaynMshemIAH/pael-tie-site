@@ -1,9 +1,7 @@
-import { Redis } from '@upstash/redis'
+// lib/redis.ts
+import Redis from 'ioredis';
 
-export const redis = new Redis({
-  url: process.env.FIELDMI1_KV_URL!,
-  token: process.env.FIELDMI1_KV_REST_TOKEN!,
-});
+export const redis = new Redis(process.env.REDIS_URL!);
 
 export const Env = {
   INGEST_TOKEN: (process.env.PAEL_TIE_SITE_INGEST_TOKEN ?? '').trim(),

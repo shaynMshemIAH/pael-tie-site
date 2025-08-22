@@ -12,10 +12,12 @@
     "@upstash/redis": "^1.35.3",
     "@vercel/kv": "^3.0.0",
     "gray-matter": "^4.0.3",
+    "ioredis": "^5.7.0",
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
+    "redis": "^5.8.2",
     "swr": "^2.3.6",
     "vercel": "^45.0.9",
     "zod": "^4.0.17"
