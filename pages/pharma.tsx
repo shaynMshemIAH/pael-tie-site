@@ -33,7 +33,7 @@ export default function Pharma() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div>
           <Image 
-            src="/images/IMG_2104.jpeg" 
+            src="/images/IMG_2104.jpg" 
             alt="Test 1" 
             width={600}
             height={400}
@@ -43,7 +43,7 @@ export default function Pharma() {
         </div>
         <div>
           <Image 
-            src="/images/IMG_2103.jpeg" 
+            src="/images/IMG_2103.jpg" 
             alt="Test 2"
             width={600}
             height={400}
@@ -53,7 +53,7 @@ export default function Pharma() {
         </div>
         <div>
           <Image 
-            src="/images/IMG_2104.jpeg"
+            src="/images/IMG_2104.jpg"
             alt="Test 3" 
             width={600}
             height={400}
@@ -63,7 +63,7 @@ export default function Pharma() {
         </div>
         <div>
           <Image 
-            src="/images/IMG_2105.jpeg" 
+            src="/images/IMG_2105.jpg" 
             alt="Test 4" 
             width={600}
             height={400}
@@ -73,7 +73,7 @@ export default function Pharma() {
         </div>
         <div>
           <Image
-            src="/images/IMG_2106.jpeg"
+            src="/images/IMG_2106.jpg"
             alt="Test 5"
             width={600}
             height={400}
@@ -83,7 +83,7 @@ export default function Pharma() {
         </div>
         <div>
           <Image
-            src="/images/IMG_2111.jpeg"
+            src="/images/IMG_2111.jpg"
             alt="Test 6"
             width={800}
             height={600}
