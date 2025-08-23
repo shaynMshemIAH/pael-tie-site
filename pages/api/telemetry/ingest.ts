@@ -1,8 +1,13 @@
 // pages/api/telemetry/ingest.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
+import Redis from "ioredis";
 
+// 🔐 Token auth
 const INGEST_TOKEN = process.env.PAEL_TIE_SITE_INGEST_TOKEN?.trim() || "";
+
+// 🔌 Redis client
+const redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379");
 
 function isTokenValid(token: string): boolean {
   const expected = Buffer.from(INGEST_TOKEN);
@@ -37,16 +42,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ ok: false, error: "Invalid payload" });
     }
 
-    // Store in in-memory global (for quick debug only)
+    // 🧠 Store in-memory (optional, keep for dev)
     (globalThis as any)._LATEST_ ||= {};
     (globalThis as any)._LATEST_[fieldType] = {
       ts: Date.now(),
       ...payload,
     };
 
-    console.log("TOKEN ON SERVER:", INGEST_TOKEN);
-    console.log("PAYLOAD:", payload);
+    // 📦 Store in Redis
+    const redisKey = `telemetry:${fieldType}`;
+    await redis.set(redisKey, JSON.stringify({
+      ts: Date.now(),
+      ...payload,
+    }));
 
+    console.log(`[REDIS] Stored under key: ${redisKey}`);
     return res.status(200).json({ ok: true, stored: fieldType });
   } catch (err: any) {
     return res.status(400).json({

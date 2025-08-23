@@ -1,30 +1,43 @@
-import useSWR from "swr";
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+export default function FieldMI1TelemetryPage() {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['fieldmi1'],
+    queryFn: async () => {
+      const response = await axios.get('/api/telemetry/fieldmi1');
+      console.log('Telemetry sample:', response.data.samples?.[0]);
+      return response.data.samples?.[0];
+    },
+    refetchInterval: 1000, // Auto-refresh every second
+  });
 
-export default function FieldMIPage() {
-  const { data, error } = useSWR("/api/telemetry/fieldmi1", fetcher, { refreshInterval: 1000 });
+  if (isLoading) return <p>Loading FieldMI1 telemetry…</p>;
+  if (isError || !data) return <p>Failed to load FieldMI1 data.</p>;
 
-  if (error) return <main style={{ padding: "2rem" }}><h1>Error loading FieldMI</h1></main>;
-  if (!data) return <main style={{ padding: "2rem" }}><h1>Loading FieldMI…</h1></main>;
-
-  const d = data?.data || {};
-  const sensors = d?.sensors || {};
-  const { mag_x, mag_y, mag_z } = sensors;
+  const sensors = data?.sensors || {};
+  const parsedSensors =
+    typeof sensors === 'string' ? JSON.parse(sensors) : sensors;
 
   return (
-    <main style={{ maxWidth: 720, margin: "40px auto", fontFamily: "Arial, sans-serif" }}>
-      <h1 style={{ fontSize: 28, marginBottom: 16 }}>FieldMI Live</h1>
-      <div style={{ display: "grid", gap: "12px", fontSize: "16px" }}>
-        <div><strong>Timestamp:</strong> {d.timestamp || "—"}</div>
-        <div><strong>Hydrogen (mV):</strong> {sensors.analog_v ?? "—"}</div>
-        <div><strong>Lux:</strong> {sensors.lux ?? "—"}</div>
-        <div><strong>Laser Triggered:</strong> {sensors.laser_triggered ?? "—"}</div>
-        <div><strong>Magnetometer Raw:</strong> {[mag_x, mag_y, mag_z].map(v => v ?? "—").join(", ")}</div>
-      </div>
-      {!data?.hasData && (
-        <p style={{ marginTop: "1rem", color: "#888" }}>No FieldMI data yet.</p>
-      )}
+    <main style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <h1>FieldMI1 Live</h1>
+      <p><strong>Timestamp:</strong> {new Date(data.ts).toLocaleString()}</p>
+      <p><strong>Hydrogen (mV):</strong> {parsedSensors.analog_v ?? '--'}</p>
+      <p><strong>Lux:</strong> {parsedSensors.lux ?? '--'}</p>
+      <p>
+        <strong>Laser Triggered:</strong>{' '}
+        {parsedSensors.laser_triggered == null
+          ? '--'
+          : parsedSensors.laser_triggered
+          ? 'Yes'
+          : 'No'}
+      </p>
+      <p>
+        <strong>Magnetometer Raw:</strong>{' '}
+        {parsedSensors.mag_x ?? '--'}, {parsedSensors.mag_y ?? '--'},{' '}
+        {parsedSensors.mag_z ?? '--'}
+      </p>
     </main>
   );
 }

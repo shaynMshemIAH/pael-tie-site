@@ -4,7 +4,7 @@ import Redis from 'ioredis';
 export const redis = new Redis(process.env.REDIS_URL!);
 
 async function getField(fieldKey: string) {
-  const raw = await redis.get(fieldKey.toLowerCase());
+  const raw = await redis.get(`telemetry:${fieldKey.toLowerCase()}`);
   try {
     return typeof raw === 'string' ? JSON.parse(raw) : raw;
   } catch (err) {
@@ -14,7 +14,7 @@ async function getField(fieldKey: string) {
 }
 
 export const getFieldMI1 = () => getField('fieldmi1');
-export const getFieldB1 = () => getField('fieldb1');
+export const getfieldb1 = () => getField('fieldb1');
 export const getFieldA1 = () => getField('fielda1');
 export const getField01 = () => getField('field01');
 

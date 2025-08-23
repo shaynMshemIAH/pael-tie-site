@@ -1,90 +1,44 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+// pages/telemetry/fieldmi1.tsx
 
-function useLatest(path: string, intervalMs = 1000) {
-  const [data, setData] = React.useState<any | null>(null);
-  const [err, setErr] = React.useState<string | null>(null);
+import { useEffect, useState } from 'react';
 
-  React.useEffect(() => {
-    let stop = false;
-    let t: any;
+export default function FieldMI1Telemetry() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-    async function tick() {
+  useEffect(() => {
+    async function fetchData() {
       try {
-        const r = await fetch(path, { cache: 'no-store' });
-        const ct = r.headers.get('content-type') || '';
-        if (!r.ok) {
-          const text = await r.text();
-          throw new Error(`HTTP ${r.status}: ${text.slice(0, 120)}`);
-        }
-        if (!ct.includes('application/json')) {
-          const text = await r.text();
-          throw new Error(`non-JSON response: ${text.slice(0, 120)}`);
-        }
-       const j = await r.json();
-       const latest = Array.isArray(j?.samples) ? j.samples[0] : null;
-
-       const mapped = latest
-         ? {
-             ok: true,
-             field: 'Field01',
-             timestamp_iso: latest.ts,
-             sensors: latest.sensors ?? {},   // 01 already nests sensors
-             full: j,
-           }
-         : { ok: false, full: j };
-
-       setData(mapped);
-        if (!stop) {
-          setData(j);
-          setErr(null);
-        }
-      } catch (e: any) {
-        if (!stop) setErr(e?.message || 'fetch failed');
+        const res = await fetch('/api/telemetry/fieldmi1');
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.msg);
+        setData(json.samples[0]);
+      } catch (err) {
+        setError(true);
       } finally {
-        if (!stop) t = setTimeout(tick, intervalMs);
+        setLoading(false);
       }
     }
 
-    tick();
-    return () => {
-      stop = true;
-      clearTimeout(t);
-    };
-  }, [path, intervalMs]);
+    fetchData();
+  }, []);
 
-  return { data, err };
-}
-
-export default function Field01Page() {
-  // IMPORTANT: hit the API route, not the page route
-  const { data, err } = useLatest('/api/telemetry/field01', 1000);
+  if (loading) return <p>Loading telemetry...</p>;
+  if (error || !data) return <p>Error fetching telemetry.</p>;
 
   return (
-    <main style={{ fontFamily: 'system-ui', padding: 16, maxWidth: 900, margin: '0 auto' }}>
-      <h1>FieldB1 — Live Telemetry</h1>
-      {err && <div style={{ color: 'crimson' }}>fetch error: {err}</div>}
-      {!data ? (
-        <div style={{ color: '#666' }}>No data yet…</div>
-      ) : (
-        <>
-          <div style={{ marginBottom: 8 }}>
-            <strong>field:</strong> <code>{data.field ?? 'Field01'}</code>{' '}
-            <span style={{ opacity: 0.6 }}>|</span>{' '}
-            <strong>ts:</strong> <code>{data.timestamp_iso}</code>
-          </div>
-          <h3>Sensors</h3>
-          <pre style={{ background: '#111', color: '#0f0', padding: 12, borderRadius: 6 }}>
-            {JSON.stringify(data.sensors ?? {}, null, 2)}
-          </pre>
-          <h3>Full payload</h3>
-          <pre style={{ background: '#111', color: '#9ef', padding: 12, borderRadius: 6 }}>
-            {JSON.stringify(data, null, 2)}
-          </pre>
-        </>
-      )}
+    <main style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
+      <h1>FieldMI1 Telemetry</h1>
+      <p><strong>Timestamp:</strong> {data.ts}</p>
+
+      <ul>
+        {Object.entries(data.sensors).map(([key, value]) => (
+          <li key={key}>
+            <strong>{key}</strong>: {JSON.stringify(value)}
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
-
-// DO NOT export getStaticProps / getServerSideProps from this page.

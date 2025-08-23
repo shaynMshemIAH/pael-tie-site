@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const fieldId = body.field_id;
     
     try {
-      await redis.set(fieldId, JSON.stringify(body));
+      await redis.set(`telemetry:${fieldId}`, JSON.stringify(body));
       return res.status(200).json({ msg: "Saved to Redis", field_id: fieldId });
     } catch (err) {
       return res.status(500).json({ msg: "Redis save failed", error: err });
@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { field_id } = req.query;
 
     try {
-      const data = await redis.get(field_id as string);
+      const data = await redis.get(`telemetry:fieldmi1`);
       if (data) {
         const parsed = JSON.parse(data);
 

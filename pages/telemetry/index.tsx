@@ -135,7 +135,7 @@ return (
       <div className="grid md:grid-cols-2 gap-6">
         <FieldCard title="FieldA1" apiPath="/api/telemetry/fielda1" />
         <FieldCard title="Field01" apiPath="/api/telemetry/field01" />
-        <FieldCard title="FieldB1" apiPath="/api/telemetry/fieldb1" />
+        <FieldCard title="fieldb1" apiPath="/api/telemetry/fieldb1" />
         <FieldCard title="FieldMI1" apiPath="/api/telemetry/fieldmi1" />
       </div>
     </div>
