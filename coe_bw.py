@@ -8,12 +8,11 @@ from quantum_digestion import quantum_digestion as quantum_digest
 # ----------------------------------------------------------------------
 # Quantum Digestion Engine
 # ----------------------------------------------------------------------
-
 def quantum_digestion(sensor_values):
     """
-    Encodes sensor telemetry into a quantum state vector using amplitude encoding,
-    applies Hadamard superpositions, and extracts energy signatures + entropy.
-    Compatible with current cuQuantum API.
+    Encodes sensor values into a quantum state vector using amplitude
+    encoding, applies Hadamard gates, and computes energy signatures
+    and entropy reduction.
     """
     num_qubits = int(np.ceil(np.log2(len(sensor_values))))
     dim = 2 ** num_qubits
@@ -22,7 +21,7 @@ def quantum_digestion(sensor_values):
     state_vector = np.zeros(dim, dtype=np.complex64)
     state_vector[0] = 1.0
 
-    # Normalize input vector → amplitude encoding
+    # Normalize and encode telemetry amplitudes
     v = np.array(sensor_values, dtype=np.float32)
     v /= np.linalg.norm(v) + 1e-9
     state_vector[:len(v)] = v.astype(np.complex64)
@@ -31,42 +30,49 @@ def quantum_digestion(sensor_values):
     handle = cusv.create()
 
     try:
-        # Build Hadamard gate
-        h_gate = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
-        h_gate = h_gate.astype(np.complex64)
+        # Hadamard gate
+        h_gate = np.array([[1, 1], [1, -1]], dtype=np.complex64) / np.sqrt(2)
 
-        # Workspace size query for cuQuantum API
+        # NEW API: workspace size query
         workspace_size = cusv.apply_matrix_get_workspace_size(
             handle,
-            state_vector,
-            h_gate,
-            (2,),          # Matrix dimensions
-            1,             # Number of targets
-            0,             # adjoint = False
-            0              # compute_type = default
+            np.complex64,   # state_vector dtype
+            cusv.CUSTATEVEC_LAYOUT_COL,  # State vector layout
+            np.complex64,   # matrix dtype
+            cusv.CUSTATEVEC_LAYOUT_COL,  # Matrix layout
+            num_qubits,     # Total number of qubits
+            1,              # nTargets
+            0,              # nControls
+            0,              # adjoint = False
+            cusv.CUSTATEVEC_COMPUTE_DEFAULT
         )
         workspace = np.zeros(workspace_size, dtype=np.uint8)
 
-        # Apply Hadamard gates sequentially across all qubits
+        # Apply H to all qubits
         for qb in range(num_qubits):
             cusv.apply_matrix(
                 handle,
-                state_vector,   # State vector
-                h_gate,         # Operator matrix
-                2,              # Matrix layout
-                [qb],           # Target qubits
-                1,              # Number of targets
-                None,           # Control qubits
-                0,              # Number of controls
-                0,              # adjoint = False
-                workspace,      # Workspace buffer
-                workspace_size  # Workspace size
+                state_vector,
+                np.complex64,  # dtype
+                cusv.CUSTATEVEC_LAYOUT_COL,
+                h_gate,
+                np.complex64,
+                cusv.CUSTATEVEC_LAYOUT_COL,
+                (2,),          # Matrix dims
+                [qb],          # Target qubits
+                1,             # nTargets
+                None,          # Control qubits
+                0,             # nControls
+                0,             # adjoint = False
+                cusv.CUSTATEVEC_COMPUTE_DEFAULT,
+                workspace,
+                workspace_size
             )
 
-        # Energy = squared amplitude probabilities
+        # Energy signature = probability amplitudes
         energy_signature = np.abs(state_vector) ** 2
 
-        # Entropy across amplitudes
+        # Shannon entropy
         entropy = -np.sum(energy_signature * np.log2(energy_signature + 1e-12))
 
     finally:
@@ -80,7 +86,6 @@ def quantum_digestion(sensor_values):
             "NH3 ↔ NH4 entanglement modeled successfully."
         ]
     }
-
 # ----------------------------------------------------------------------
 # Map Quantum Digest → COE Parameters
 # ----------------------------------------------------------------------
