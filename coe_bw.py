@@ -34,13 +34,12 @@ def quantum_digest(sensor_values):
         h_gate = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
         for qb in range(num_qubits):
             state_vector = cusv.apply_matrix(
-                handle,
-                state_vector,
-                h_gate,
-                (num_qubits,),
-                target_qubit=qb
-            )
-
+            handle,
+            state_vector,
+            h_gate,
+            (num_qubits,),   # Dimensions
+            [qb],            # <-- Pass as a list of target qubits, positional, no keyword
+        )
         # Energy signature = squared amplitudes
         energy_signature = np.abs(state_vector) ** 2
 
