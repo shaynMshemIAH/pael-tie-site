@@ -3,6 +3,7 @@ import json
 import time
 import numpy as np
 from cuquantum import custatevec as cusv
+from quantum_digestion import quantum_digestion as quantum_digest
 
 # ----------------------------------------------------------------------
 # Quantum Digestion Engine
@@ -112,7 +113,7 @@ def coe_quantum_bridge(payload):
     ]
 
     # Quantum digestion stage
-    qdigest = quantum_digestion(telemetry_vector)
+    qdigestion = quantum_digestion(telemetry_vector)
     energy_signature = np.array(qdigestion["energy_signature"])
     entropy = qdigestion["entropy_reduction"]
 
