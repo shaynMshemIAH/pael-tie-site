@@ -8,64 +8,65 @@ from cuquantum import custatevec as cusv
 # ----------------------------------------------------------------------
 # Quantum Digestion Core
 # ----------------------------------------------------------------------
+
 def quantum_digestion(sensor_values):
     """
-    Encodes sensor values into a quantum state vector using amplitude
-    encoding, applies Hadamard gates, and computes energy signatures
-    and entropy reduction.
+    Encodes sensor telemetry into a quantum state vector using amplitude encoding,
+    applies Hadamard superpositions, and extracts energy signatures + entropy.
+    Compatible with current cuQuantum API.
     """
     num_qubits = int(np.ceil(np.log2(len(sensor_values))))
     dim = 2 ** num_qubits
 
-    # Initialize zero state |000...>
+    # Initialize |000...>
     state_vector = np.zeros(dim, dtype=np.complex64)
     state_vector[0] = 1.0
 
-    # Normalize and encode sensor amplitudes into initial state
+    # Normalize input vector → amplitude encoding
     v = np.array(sensor_values, dtype=np.float32)
     v /= np.linalg.norm(v) + 1e-9
     state_vector[:len(v)] = v.astype(np.complex64)
 
-    # Create cuQuantum handle
+    # cuQuantum handle
     handle = cusv.create()
 
     try:
-        # Build Hadamard matrix
+        # Build Hadamard gate
         h_gate = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
         h_gate = h_gate.astype(np.complex64)
 
-        # Query workspace size for the new cuQuantum API
+        # Workspace size query for cuQuantum API
         workspace_size = cusv.apply_matrix_get_workspace_size(
             handle,
             state_vector,
             h_gate,
-            (2,),       # Matrix dimensions
-            1,          # Number of target qubits
-            0,          # adjoint = False
-            0           # compute_type = default
+            (2,),          # Matrix dimensions
+            1,             # Number of targets
+            0,             # adjoint = False
+            0              # compute_type = default
         )
         workspace = np.zeros(workspace_size, dtype=np.uint8)
 
-        # Apply Hadamard to all qubits sequentially
+        # Apply Hadamard gates sequentially across all qubits
         for qb in range(num_qubits):
             cusv.apply_matrix(
                 handle,
-                state_vector,
-                h_gate,
-                2,
-                [qb],            # Target qubits
-                1,               # Number of targets
-                None,            # Control qubits
-                0,               # Number of controls
-                0,               # adjoint = False
-                workspace,
-                workspace_size,
+                state_vector,   # State vector
+                h_gate,         # Operator matrix
+                2,              # Matrix layout
+                [qb],           # Target qubits
+                1,              # Number of targets
+                None,           # Control qubits
+                0,              # Number of controls
+                0,              # adjoint = False
+                workspace,      # Workspace buffer
+                workspace_size  # Workspace size
             )
 
-        # Energy distribution = squared amplitudes
+        # Energy = squared amplitude probabilities
         energy_signature = np.abs(state_vector) ** 2
 
-        # Shannon entropy reduction
+        # Entropy across amplitudes
         entropy = -np.sum(energy_signature * np.log2(energy_signature + 1e-12))
 
     finally:
