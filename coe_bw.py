@@ -7,6 +7,24 @@ from math import pi
 from typing import List, Tuple, Optional
 from quantum_digestion import quantum_digest
 
+SCHEMA_HINT = {
+    "required_keys": [
+        "field_id",
+        "sensors",
+        "zrasw_progress",
+        "seconds_active_today",
+        "i_score_over_25",
+        "laws_score"
+    ],
+    "sensors": {
+        "analog_v": "float — MQ voltage (NH3 proxy)",
+        "lux": "float — light sensor",
+        "temp_object": "float — object temperature (°C)",
+        "temp_ambient": "float — ambient temperature (°C)",
+        "bearing_deg": "float — compass bearing (0-360°)"
+    }
+}
+
 SECONDS_PER_DAY = 86400
 
 # ==========================================================

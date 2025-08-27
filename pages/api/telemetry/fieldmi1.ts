@@ -7,6 +7,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const fieldId = body.field_id;
     
     try {
+
+      const payload = {
+        ...body,
+        timestamp: body.timestamp || Date.now(), // Fallback if Pi doesn't send one
+      };
+
       await redis.set(`telemetry:${fieldId}`, JSON.stringify(body));
       return res.status(200).json({ msg: "Saved to Redis", field_id: fieldId });
     } catch (err) {
@@ -16,12 +22,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     const { field_id } = req.query;
+    const key = `telemetry:${field_id || "fieldmi1"}`;
 
     try {
-      const data = await redis.get(`telemetry:fieldmi1`);
-      if (data) {
+        const data = await redis.get(key);
+        if (!data) {
+          return res.status(404).json({ hasData: false, msg: "No data found" });
+        }
+      
         const parsed = JSON.parse(data);
-
         return res.status(200).json({
           samples: [
             {
@@ -30,11 +39,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             },
           ],
         });
-      } else {
-        return res.status(404).json({ hasData: false, msg: "No data found" });
-      }
     } catch (err) {
       return res.status(500).json({ msg: "Redis read failed", error: err });
     }
-  }
-} 
+  }  
+
+  return res.status(405).json({ msg: "Method Not Allowed" });
+}
+ 

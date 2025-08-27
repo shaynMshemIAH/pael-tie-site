@@ -1,0 +1,35 @@
+/* styles/globals.css */
+:root { --radius: 16px; }
+html, body { margin: 0; padding: 0; font-family: Arial, sans-serif; background:#f7f7fb; }
+
+/* simple cards with image backdrops */
+.stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.stageBackdrop {
+  position: absolute; inset: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: .4;
+}
+
+.stageContent {
+  position: relative; padding: 24px; backdrop-filter: blur(2px);
+}
+
+.chips { display:flex; gap:8px; flex-wrap: wrap; margin-top:8px; }
+.chip  { border:1px solid #e5e7eb; border-radius:999px; padding:4px 10px; font-size:12px; }
+
+.card { border:1px solid #e5e7eb; border-radius:12px; padding:12px; font-size:12px; }
+.grid2 { display:grid; grid-template-columns: 1fr; gap:12px; }
+@media (min-width: 768px){ .grid2 { grid-template-columns: 1fr 1fr; } }
+
+.raw {
+  background:#0b0b0b; color:#b9f6ca; border-radius:12px; padding:12px;
+  font-size:12px; max-height:220px; overflow:auto; line-height:1.45;
+}

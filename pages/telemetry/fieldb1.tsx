@@ -1,44 +1,37 @@
-// pages/telemetry/fieldmi1.tsx
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-import { useEffect, useState } from 'react';
-
-export default function FieldMI1Telemetry() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+export default function FieldB1TelemetryPage() {
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch('/api/telemetry/fieldmi1');
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.msg);
-        setData(json.samples[0]);
-      } catch (err) {
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    }
+  // React Query — fetch data every 2 seconds
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ["fieldb1Telemetry"],
+    queryFn: async () => {
+      const res = await axios.get("/api/telemetry/fieldb1");
+      return res.data.samples[0];
+    },
+    refetchInterval: 1000,
+  });
 
-    fetchData();
-  }, []);
+  const sensors = data?.sensors || {};
+  const formatValue = (value: any, suffix = "") => 
+    value === null || value === undefined ? "N/A" : `${value}${suffix}`;
 
-  if (loading) return <p>Loading telemetry...</p>;
-  if (error || !data) return <p>Error fetching telemetry.</p>;
+  // Early states
+  if (isLoading) return <p>Loading FieldB1 telemetry...</p>;
+  if (isError || !data) return <p className="text-red-500">Failed to load FieldB1 data.</p>;
 
   return (
     <main style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
-      <h1>FieldMI1 Telemetry</h1>
-      <p><strong>Timestamp:</strong> {data.ts}</p>
+      <h1>FieldB1 Live Telemetry</h1>
+     
 
-      <ul>
-        {Object.entries(data.sensors).map(([key, value]) => (
-          <li key={key}>
-            <strong>{key}</strong>: {JSON.stringify(value)}
-          </li>
-        ))}
-      </ul>
+      <p><strong>Timestamp:</strong> {new Date(data.timestamp).toLocaleString()}</p>
+      <p><strong>Motion Detected:</strong> {sensors.motion ? "✅ Yes" : "❌ No"}</p>
+      <p><strong>Ultrasonic Distance:</strong> {formatValue(sensors.ultrasonic, " m")}</p>
+      <p><strong>Liquid Level:</strong> {sensors.liquid_pin ? "✅ Yes" : "❌ No"}</p>
     </main>
   );
 }

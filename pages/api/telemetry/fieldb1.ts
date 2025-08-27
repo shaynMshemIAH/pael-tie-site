@@ -2,51 +2,63 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { redis } from '../../../lib/redis';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // POST method: Save to Redis
   if (req.method === 'POST') {
     try {
-      const payload = req.body;
-      const fieldId = payload.field_id ?? req.query.field;
+      const body = req.body;
+      const fieldId = body.field_id || 'fieldb1';
 
-      if (!fieldId) {
-        return res.status(400).json({ msg: "Missing field_id in payload or query" });
-      }
+      // Normalize timestamp
+      const timestamp = body.timestamp
+        ? new Date(body.timestamp).toISOString()
+        : new Date().toISOString();
 
-      await redis.set(fieldId, JSON.stringify(payload));
-      return res.status(200).json({ msg: "Saved to Redis", field_id: fieldId });
+      const payload = {
+        ...body,
+        field_id: fieldId,
+        timestamp,
+      };
+
+      // Save cleanly
+      await redis.set(`telemetry:${fieldId}`, JSON.stringify(payload));
+
+      return res.status(200).json({ msg: 'Saved to Redis', field_id: fieldId });
     } catch (err) {
-      return res.status(500).json({ msg: "Redis save failed", error: err });
+      return res.status(500).json({ msg: 'Redis save failed', error: err });
     }
   }
 
-  // GET method: Retrieve from Redis
   if (req.method === 'GET') {
     try {
-      const fieldId = req.query.field_id as string;
+      const fieldId = req.query.field_id || 'fieldb1';
+      const key = `telemetry:${fieldId}`;
+      const data = await redis.get(key);
 
-      if (!fieldId) {
-        return res.status(400).json({ msg: "Missing field_id in query" });
-      }
-
-      const data = await redis.get(fieldId);
       if (!data) {
-        return res.status(404).json({ hasData: false, msg: "No data found" });
+        return res.status(404).json({ hasData: false, msg: 'No data found' });
       }
 
       const parsed = JSON.parse(data);
+
+      // Ultrasonic: convert meters → cm at the API level
+      if (parsed.sensors?.ultrasonic !== undefined) {
+        parsed.sensors.ultrasonic = parsed.sensors.ultrasonic * 100;
+      }
+
+      // Keep backward-compatible samples array AND provide direct access for UI
       return res.status(200).json({
+        timestamp: parsed.timestamp,
+        sensors: parsed.sensors,
         samples: [
           {
-            ts: parsed.timestamp ?? new Date().toISOString(),
-            sensors: parsed.sensors ?? {},
+            ts: parsed.timestamp,
+            sensors: parsed.sensors,
           },
         ],
       });
     } catch (err) {
-      return res.status(500).json({ msg: "Redis read failed", error: err });
+      return res.status(500).json({ msg: 'Redis read failed', error: err });
     }
   }
 
-  // Method not allowed
-  return res.status(405).json({ msg: "Method not allowed" });
+  return res.status(405).json({ msg: 'Method Not Allowed' });
 }
