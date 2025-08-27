@@ -7,7 +7,7 @@ from cuquantum import custatevec as cusv
 # ----------------------------------------------------------------------
 # Quantum Digestion Engine
 # ----------------------------------------------------------------------
-def quantum_digest(sensor_values):
+def quantum_digestion(sensor_values):
     """
     Encodes sensor telemetry into quantum amplitude space using cuQuantum,
     applies Hadamard superpositions, and extracts energy signatures + entropy.
@@ -112,9 +112,9 @@ def coe_quantum_bridge(payload):
     ]
 
     # Quantum digestion stage
-    qdigest = quantum_digest(telemetry_vector)
-    energy_signature = np.array(qdigest["energy_signature"])
-    entropy = qdigest["entropy_reduction"]
+    qdigest = quantum_digestion(telemetry_vector)
+    energy_signature = np.array(qdigestion["energy_signature"])
+    entropy = qdigestion["entropy_reduction"]
 
     # Relativistic COE projection
     coe_elements = map_quantum_to_coe(
@@ -131,7 +131,7 @@ def coe_quantum_bridge(payload):
 
     return {
         "ts": time.time(),
-        "quantum_digest": qdigest,
+        "quantum_digestion": qdigestion,
         "coe_elements": coe_elements,
         "ldd_phase": {
             "tih_dh_ratio": tih_dh_ratio,

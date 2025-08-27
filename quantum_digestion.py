@@ -8,7 +8,7 @@ from cuquantum import custatevec as cusv
 # ----------------------------------------------------------------------
 # Quantum Digestion Core
 # ----------------------------------------------------------------------
-def quantum_digest(sensor_values):
+def quantum_digestion(sensor_values):
     """
     Encodes sensor values into a quantum state vector using amplitude
     encoding, applies Hadamard gates, and computes energy signatures
@@ -133,8 +133,8 @@ def coe_quantum_bridge(payload):
     ]
 
     # Execute quantum digestion pipeline
-    qdigest = quantum_digest(telemetry_vector)
-    energy_signature = np.array(qdigest["energy_signature"])
+    qdigest = quantum_digestion(telemetry_vector)
+    energy_signature = np.array(qdigestion["energy_signature"])
     entropy = qdigest["entropy_reduction"]
 
     # Project quantum energy into relativistic COEs
@@ -152,7 +152,7 @@ def coe_quantum_bridge(payload):
 
     return {
         "ts": time.time(),
-        "quantum_digest": qdigest,
+        "quantum_digestion": qdigest,
         "coe_elements": coe_elements,
         "ldd_phase": {
             "tih_dh_ratio": tih_dh_ratio,
