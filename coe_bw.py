@@ -18,10 +18,11 @@ SCHEMA_HINT = {
     ],
     "sensors": {
         "analog_v": "float — MQ voltage (NH3 proxy)",
-        "lux": "float — light sensor",
+        "nh3_entropy": "float — NH3/NH4⁺ entropy state",
+        "lux": "float — light sensor (LUX)",
         "temp_object": "float — object temperature (°C)",
         "temp_ambient": "float — ambient temperature (°C)",
-        "bearing_deg": "float — compass bearing (0-360°)"
+        "bearing_deg": "float — compass bearing (0–360°)"
     }
 }
 
