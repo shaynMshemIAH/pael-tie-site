@@ -1,35 +1,18 @@
 // lib/redis.ts
-import Redis from 'ioredis';
+import Redis from "ioredis";
 
-export const redis = new Redis(process.env.REDIS_URL!);
+let client: any = null;
 
-async function getField(fieldKey: string) {
-  const raw = await redis.get(`telemetry:${fieldKey.toLowerCase()}`);
-  try {
-    return typeof raw === 'string' ? JSON.parse(raw) : raw;
-  } catch (err) {
-    console.error(`Error parsing Redis value for ${fieldKey}:`, err);
-    return null;
+/** Build (or return) a singleton Redis client */
+export function buildRedis() {
+  if (client) return client;
+  const url = process.env.REDIS_URL;
+  if (!url) {
+    throw new Error("REDIS_URL is not set");
   }
+  client = new Redis(url);
+  return client;
 }
 
-export const getFieldMI1 = () => getField('fieldmi1');
-export const getfieldb1 = () => getField('fieldb1');
-export const getFieldA1 = () => getField('fielda1');
-export const getField01 = () => getField('field01');
-
-export async function POST(req: Request) {
-  const body = await req.json();
-  const { field } = body;
-
-  if (!field) {
-    return new Response(JSON.stringify({ error: 'Missing field key' }), { status: 400 });
-  }
-
-  await redis.set(field.toLowerCase(), JSON.stringify(body));
-
-  return new Response(JSON.stringify({
-    message: `${field} data endpoint`,
-    timestamp: new Date().toISOString(),
-  }), { status: 200 });
-}
+/** Convenience singleton for files that import { redis } */
+export const redis = buildRedis();

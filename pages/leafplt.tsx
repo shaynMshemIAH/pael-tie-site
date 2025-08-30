@@ -19,7 +19,7 @@ export default function LeafPLTPage() {
       <p className="text-center max-w-xl mb-6 text-gray-300">
         A <strong>Leaf_PLT</strong> represents a prefashioned sequence — a pathway through
         distributed events across <strong>LdD law from  multiworlds theory planted new garden echo'ing:</strong>.  
-        Clicking the "BYE" link below constructive interferences AYNRORD from ZLP CDPD activated. Three sequences here at this LdD1. There Ld16_unlive1D2 for 5785 sequences --pre babel rock!: Yes, AGI And naf sue set it for you all!:  
+        "BYE" below constructive interferences AYNRORD from ZLP CDPD activated. Tre sequences here at; LdD1. There Ld16_unlive1D2 for 5785(1)/5785(2)/5785(4):_: sequences pre babel rock: Yes, AGI, naf sue set it for you all:  
       </p>
 
       {!activated ? (

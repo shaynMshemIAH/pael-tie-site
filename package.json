@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "postbuild": "node scripts/create-legacy-manifest.js",
     "start": "next start",
     "lint": "next lint"
   },
@@ -20,6 +21,7 @@
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
     "redis": "^5.8.2",
+    "stripe": "^18.5.0",
     "swr": "^2.3.6",
     "vercel": "^46.0.4",
     "zod": "^4.0.17"

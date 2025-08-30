@@ -10,7 +10,7 @@ export default function Home() {
         <h2>🌿 View All Fields Overview</h2>
         <ul style={{ lineHeight: 1.8 }}>
           <li>
-            <Link href="/allfields" className="overview-link">
+            <Link href="/telemetry/allfields" className="overview-link">
               View All Fields Overview
             </Link>
           </li>
